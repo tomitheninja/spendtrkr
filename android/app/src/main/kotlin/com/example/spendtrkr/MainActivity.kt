@@ -1,4 +1,4 @@
-package com.example.spendtrkr
+package hu.tomitheninja.spendtrkr
 
 import io.flutter.embedding.android.FlutterActivity
 
