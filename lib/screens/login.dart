@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:spendtrkr/controllers/login.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -70,7 +71,33 @@ class LoginScreen extends GetView<LoginController> {
                             ),
                           ),
                           ElevatedButton(
-                            onPressed: controller.login,
+                            onPressed: () {
+                              try {
+                                controller.login();
+                                Get.snackbar(
+                                    "Success", "Signed in successfully");
+                              } on FirebaseAuthException catch (e) {
+                                switch (e.code) {
+                                  case 'invalid-email':
+                                    Get.snackbar(
+                                        "Error", "Invalid email address");
+                                    break;
+                                  case 'user-disabled':
+                                    Get.snackbar("Error", "User is disabled");
+                                    break;
+                                  case 'user-not-found':
+                                  case 'wrong-password':
+                                    Get.snackbar(
+                                        "Error", "Invalid email or password");
+                                    break;
+                                  default:
+                                    Get.snackbar("Error", "An error occurred");
+                                    break;
+                                }
+                              } catch (e) {
+                                Get.snackbar("Error", e.toString());
+                              }
+                            },
                             child: Text('Login'),
                           ),
                         ],

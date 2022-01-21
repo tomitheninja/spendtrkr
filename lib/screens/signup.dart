@@ -5,12 +5,11 @@ import 'package:spendtrkr/controllers/signup.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends GetView<SignupController> {
   const SignupScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(SignupController());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sign Up'),
@@ -102,6 +101,8 @@ class SignupScreen extends StatelessWidget {
                                 controller.signup();
                                 Get.snackbar(
                                     "Success", "Signed up successfully");
+                                controller.passwordController.text = '';
+                                controller.passwordAgainController.text = '';
                               } on FirebaseAuthException catch (e) {
                                 switch (e.code) {
                                   case 'email-already-in-use':

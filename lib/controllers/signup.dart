@@ -60,7 +60,7 @@ class SignupController extends GetxController {
 
   Future<void> signup() async {
     if (signupFormKey.currentState!.validate()) {
-      return AuthMethods().signupUsinglocalStrategy(
+      return AuthMethods().signupUsingLocalStrategy(
           email: emailController.text,
           password: passwordController.text,
           username: usernameController.text);

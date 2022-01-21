@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:password_strength/password_strength.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:spendtrkr/resources/auth.dart';
 
 class LoginController extends GetxController {
   final loginFormKey = GlobalKey<FormState>();
@@ -34,9 +35,10 @@ class LoginController extends GetxController {
     }
   }
 
-  void login() {
+  Future<void> login() async {
     if (loginFormKey.currentState!.validate()) {
-      Get.snackbar("Success", "Signed in successfully");
+      return AuthMethods().signInUsingLocalStrategy(
+          email: emailController.text, password: passwordController.text);
     }
   }
 }
