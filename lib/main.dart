@@ -1,20 +1,42 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:spendtrkr/controllers/signup.dart';
+import 'package:spendtrkr/screens/login.dart';
+import 'controllers/login.dart';
+import 'screens/signup.dart';
+import 'utils/colors.dart';
 
-void main() => runApp(MaterialApp(home: Home()));
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
 
-class Home extends StatelessWidget {
-  var count = 0.obs;
+  runApp(const MyApp());
+}
 
-  Home({Key? key}) : super(key: key);
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
-  Widget build(context) => Scaffold(
-      appBar: AppBar(title: const Text("counter")),
-      body: Center(
-        child: Obx(() => Text("$count")),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () => count++,
-      ));
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Spendtrkr',
+      theme: ThemeData.dark()
+          .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
+      initialRoute: '/login',
+      getPages: [
+        GetPage(
+          name: '/login',
+          page: () => const LoginScreen(),
+          binding: LoginBinding(),
+        ),
+        GetPage(
+          name: '/signup',
+          page: () => const SignupScreen(),
+          binding: SignupBinding(),
+        ),
+      ],
+    );
+  }
 }
