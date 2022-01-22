@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "541450653193",
+    "project_id": "spendtrkr-e40ce",
+    "storage_bucket": "spendtrkr-e40ce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:541450653193:android:1729e4f7c00462d69272d8",
+        "android_client_info": {
+          "package_name": "hu.tomitheninja.spendtrkr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "541450653193-86ts1qso9u7of1slg73lkdrn67abisee.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hu.tomitheninja.spendtrkr",
+            "certificate_hash": "706af9e2393e8b3df51afab91e3a5978bf571a4a"
+          }
+        },
+        {
+          "client_id": "541450653193-73scfkpjkrjdegiq2qs2hter7dljdrvt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBj0F4aOT5eSR1TqlcYaCM6fixqJW1oQBo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "541450653193-73scfkpjkrjdegiq2qs2hter7dljdrvt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
