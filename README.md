@@ -1,16 +1,31 @@
-# spendtrkr
+## Követelmények
 
-Your opportunity to organize your spending
+Egy Flutter alkalmazás elkészítése, ami tartalmazz az alábbi 
+követelményekből minél többet.
 
-## Getting Started
+Az egyes követelmények lecserélhetőek, személyes egyeztetés és 
+jóváhagyás után.
 
-This project is a starting point for a Flutter application.
+A program témája lehet saját, vagy ha nincs ötlet, akkor az alábbi
+témák egyike:
 
-A few resources to get you started if this is your first Flutter project:
+| Funkció | Pontszám | Implementálva |
+|----------------------------------------------------------------------------------------------------------------------|:----------:|:----------------:|
+| Állapotkezelés Provider, vagy BLoC segítségével | 15 | - [ ] |
+| Legalább 5 különböző képernyő, melyek interakcióba lépnek egymással, adatot küldenek egymásnak| 15 | - [ ] |
+| Legalább 2 típusú dialógus ablak: <ul><li> amin keresztül információt jelenítünk meg</li> <li> amin keresztül információt kérünk be</li></ul> | 5 | - [ ] |
+| Fotó készítése tárolása és megjelenítése| 10 | - [ ] |
+| Hive használata adatok tárolására | 10 | - [ ] |
+| Többnyelvű alkalmazás készítése, nyelvválasztási lehetőséggel | 10 | - [ ] |
+| Egy screen, ami alkalmazkodik a különböző méretű képernyőkhöz | 5 | - [ ] |
+| Animáció| 5 | - [ ] |
+| Választás a nyévjegyzékből| 5 | - [ ] |
+| Tesztek legalább 2 képernyőre/funkcióra | 15 | - [ ] |
+| Google térkép használata | 10 | - [ ] |
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Pontozás:
+* 90-100 jeles
+* 75-89 jó
+* 60-74 - közepes
+* 45 - 59 - elégséges
