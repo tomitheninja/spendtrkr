@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_starter/ui/auth/auth.dart';
 import 'package:get/get.dart';
-import 'package:flutter_starter/ui/components/segmented_selector.dart';
-import 'package:flutter_starter/controllers/controllers.dart';
-import 'package:flutter_starter/ui/components/components.dart';
-import 'package:flutter_starter/models/models.dart';
-import 'package:flutter_starter/constants/constants.dart';
+import 'package:spendtrkr/ui/components/segmented_selector.dart';
+import 'package:spendtrkr/controllers/controllers.dart';
+import 'package:spendtrkr/ui/components/components.dart';
+import 'package:spendtrkr/models/models.dart';
+import 'package:spendtrkr/constants/constants.dart';
 
 class SettingsUI extends StatelessWidget {
+  const SettingsUI({Key? key}) : super(key: key);
+
   //final LanguageController languageController = LanguageController.to;
   //final ThemeController themeController = ThemeController.to;
 
@@ -27,16 +27,6 @@ class SettingsUI extends StatelessWidget {
       children: <Widget>[
         languageListTile(context),
         themeListTile(context),
-        ListTile(
-            title: Text('settings.updateProfile'.tr),
-            trailing: ElevatedButton(
-              onPressed: () async {
-                Get.to(UpdateProfileUI());
-              },
-              child: Text(
-                'settings.updateProfile'.tr,
-              ),
-            )),
         ListTile(
           title: Text('settings.signOut'.tr),
           trailing: ElevatedButton(

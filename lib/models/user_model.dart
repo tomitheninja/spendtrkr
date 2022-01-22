@@ -4,12 +4,15 @@ class UserModel {
   final String email;
   final String name;
   final String photoUrl;
+  final followers = [];
+  final following = [];
 
-  UserModel(
-      {required this.uid,
-      required this.email,
-      required this.name,
-      required this.photoUrl});
+  UserModel({
+    required this.uid,
+    required this.email,
+    required this.name,
+    required this.photoUrl,
+  });
 
   factory UserModel.fromMap(Map data) {
     return UserModel(
@@ -20,6 +23,10 @@ class UserModel {
     );
   }
 
-  Map<String, dynamic> toJson() =>
-      {"uid": uid, "email": email, "name": name, "photoUrl": photoUrl};
+  Map<String, dynamic> toJson() => {
+        "uid": uid,
+        "email": email,
+        "name": name,
+        "photoUrl": photoUrl,
+      };
 }

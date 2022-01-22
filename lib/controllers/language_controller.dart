@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_starter/constants/globals.dart';
+import 'package:spendtrkr/constants/globals.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'dart:ui' as ui;
@@ -23,7 +23,6 @@ class LanguageController extends GetxController {
       String _deviceLanguage = ui.window.locale.toString();
       _deviceLanguage =
           _deviceLanguage.substring(0, 2); //only get 1st 2 characters
-      print(ui.window.locale.toString());
       updateLanguage(_deviceLanguage);
     }
   }

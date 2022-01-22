@@ -1,20 +1,29 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:password_strength/password_strength.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_starter/models/models.dart';
-import 'package:flutter_starter/ui/auth/auth.dart';
-import 'package:flutter_starter/ui/ui.dart';
-import 'package:flutter_starter/ui/components/components.dart';
-import 'package:flutter_starter/helpers/helpers.dart';
+import 'package:spendtrkr/constants/app_routes.dart';
+import 'package:spendtrkr/helpers/image_picker.dart';
+import 'package:spendtrkr/helpers/storage.dart';
+import 'package:spendtrkr/models/models.dart';
+import 'package:spendtrkr/ui/components/components.dart';
+import 'package:spendtrkr/helpers/helpers.dart';
 
 class AuthController extends GetxController {
   static AuthController to = Get.find();
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordAgainController = TextEditingController();
+  final _photo = Uint8List(0).obs;
+  Uint8List get photo => _photo.value;
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   Rxn<User> firebaseUser = Rxn<User>();
@@ -39,6 +48,32 @@ class AuthController extends GetxController {
     super.onClose();
   }
 
+  String? emailValidator(String? value) {
+    if (!EmailValidator.validate(value ?? '')) {
+      return 'Invalid email';
+    }
+  }
+
+  String? passwordValidator(String? value) {
+    if (estimatePasswordStrength(value ?? '') < 0.5) {
+      return 'Password is too weak';
+    }
+  }
+
+  String? passwordAgainValidator(String? value) {
+    if (value != passwordController.text) {
+      return 'Passwords do not match';
+    }
+  }
+
+  Future<void> selectImage() async {
+    _photo.value = Uint8List(0);
+    var img = await pickImage(ImageSource.gallery);
+    if (img != null) {
+      _photo.value = img;
+    }
+  }
+
   handleAuthChanged(_firebaseUser) async {
     //get user data from firestore
     if (_firebaseUser?.uid != null) {
@@ -47,10 +82,9 @@ class AuthController extends GetxController {
     }
 
     if (_firebaseUser == null) {
-      print('Send to signin');
-      Get.offAll(SignInUI());
+      Get.offAllNamed(Routes.signin);
     } else {
-      Get.offAll(HomeUI());
+      Get.offAllNamed(Routes.home);
     }
   }
 
@@ -62,7 +96,6 @@ class AuthController extends GetxController {
 
   //Streams the firestore user from the firestore collection
   Stream<UserModel> streamFirestoreUser() {
-    print('streamFirestoreUser()');
 
     return _db
         .doc('/users/${firebaseUser.value!.uid}')
@@ -77,62 +110,52 @@ class AuthController extends GetxController {
   }
 
   //Method to handle user sign in using email and password
-  signInWithEmailAndPassword(BuildContext context) async {
-    showLoadingIndicator();
+  Future<void> signInWithEmailAndPassword(BuildContext context) async {
+    await showLoadingIndicator();
     try {
       await _auth.signInWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim());
       emailController.clear();
       passwordController.clear();
-      hideLoadingIndicator();
-    } catch (error) {
-      hideLoadingIndicator();
-      Get.snackbar('auth.signInErrorTitle'.tr, 'auth.signInError'.tr,
-          snackPosition: SnackPosition.BOTTOM,
-          duration: Duration(seconds: 7),
-          backgroundColor: Get.theme.snackBarTheme.backgroundColor,
-          colorText: Get.theme.snackBarTheme.actionTextColor);
+    } finally {
+      await hideLoadingIndicator();
     }
   }
 
   // User registration using email and password
-  registerWithEmailAndPassword(BuildContext context) async {
+  Future<void> signupWithEmailAndPassword(BuildContext context) async {
     showLoadingIndicator();
     try {
-      await _auth
-          .createUserWithEmailAndPassword(
-              email: emailController.text, password: passwordController.text)
-          .then((result) async {
-        print('uID: ' + result.user!.uid.toString());
-        print('email: ' + result.user!.email.toString());
-        //get photo url from gravatar if user has one
-        Gravatar gravatar = Gravatar(emailController.text);
-        String gravatarUrl = gravatar.imageUrl(
-          size: 200,
-          defaultImage: GravatarImage.retro,
-          rating: GravatarRating.pg,
-          fileExtension: true,
-        );
-        //create the new user object
-        UserModel _newUser = UserModel(
-            uid: result.user!.uid,
-            email: result.user!.email!,
-            name: nameController.text,
-            photoUrl: gravatarUrl);
-        //create the user in firestore
-        _createUserFirestore(_newUser, result.user!);
-        emailController.clear();
-        passwordController.clear();
-        hideLoadingIndicator();
-      });
-    } on FirebaseAuthException catch (error) {
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      var user = result.user;
+      if (user == null) {
+        throw Exception('Error signing up');
+      }
+      await user.sendEmailVerification();
+      Gravatar gravatar = Gravatar(emailController.text);
+      String photoUrl = photo.isEmpty
+          ? gravatar.imageUrl(
+              size: 200,
+              defaultImage: GravatarImage.retro,
+              rating: GravatarRating.pg,
+              fileExtension: true,
+            )
+          : await StorageMethods().uploadImage("avatar", photo);
+      UserModel _newUser = UserModel(
+          uid: result.user!.uid,
+          email: result.user!.email!,
+          name: nameController.text,
+          photoUrl: photoUrl);
+      //create the user in firestore
+      _createUserFirestore(_newUser, result.user!);
+      emailController.clear();
+      passwordController.clear();
+    } finally {
       hideLoadingIndicator();
-      Get.snackbar('auth.signUpErrorTitle'.tr, error.message!,
-          snackPosition: SnackPosition.BOTTOM,
-          duration: Duration(seconds: 10),
-          backgroundColor: Get.theme.snackBarTheme.backgroundColor,
-          colorText: Get.theme.snackBarTheme.actionTextColor);
     }
   }
 
@@ -152,14 +175,12 @@ class AuthController extends GetxController {
               .then((value) => _updateUserFirestore(user, _firebaseUser.user!));
         });
       } catch (err) {
-        print('Caught error: $err');
-        //not yet working, see this issue https://github.com/delay/flutter_starter/issues/21
+        //not yet working, see this issue https://github.com/delay/spendtrkr/issues/21
         if (err ==
             "Error: [firebase_auth/email-already-in-use] The email address is already in use by another account.") {
           _authUpdateUserNoticeTitle = 'auth.updateUserEmailInUse'.tr;
           _authUpdateUserNotice = 'auth.updateUserEmailInUse'.tr;
         } else {
-          
           _authUpdateUserNoticeTitle = 'auth.wrongPasswordNotice'.tr;
           _authUpdateUserNotice = 'auth.wrongPasswordNotice'.tr;
         }
@@ -167,14 +188,13 @@ class AuthController extends GetxController {
       hideLoadingIndicator();
       Get.snackbar(_authUpdateUserNoticeTitle, _authUpdateUserNotice,
           snackPosition: SnackPosition.BOTTOM,
-          duration: Duration(seconds: 5),
+          duration: const Duration(seconds: 5),
           backgroundColor: Get.theme.snackBarTheme.backgroundColor,
           colorText: Get.theme.snackBarTheme.actionTextColor);
     } on PlatformException catch (error) {
       //List<String> errors = error.toString().split(',');
       // print("Error: " + errors[1]);
       hideLoadingIndicator();
-      print(error.code);
       String authError;
       switch (error.code) {
         case 'ERROR_WRONG_PASSWORD':
@@ -186,7 +206,7 @@ class AuthController extends GetxController {
       }
       Get.snackbar('auth.wrongPasswordNoticeTitle'.tr, authError,
           snackPosition: SnackPosition.BOTTOM,
-          duration: Duration(seconds: 10),
+          duration: const Duration(seconds: 10),
           backgroundColor: Get.theme.snackBarTheme.backgroundColor,
           colorText: Get.theme.snackBarTheme.actionTextColor);
     }
@@ -199,8 +219,8 @@ class AuthController extends GetxController {
   }
 
   //create the firestore user in users collection
-  void _createUserFirestore(UserModel user, User _firebaseUser) {
-    _db.doc('/users/${_firebaseUser.uid}').set(user.toJson());
+  Future<void> _createUserFirestore(UserModel user, User _firebaseUser) async {
+    await _db.doc('/users/${_firebaseUser.uid}').set(user.toJson());
     update();
   }
 
@@ -213,14 +233,14 @@ class AuthController extends GetxController {
       Get.snackbar(
           'auth.resetPasswordNoticeTitle'.tr, 'auth.resetPasswordNotice'.tr,
           snackPosition: SnackPosition.BOTTOM,
-          duration: Duration(seconds: 5),
+          duration: const Duration(seconds: 5),
           backgroundColor: Get.theme.snackBarTheme.backgroundColor,
           colorText: Get.theme.snackBarTheme.actionTextColor);
     } on FirebaseAuthException catch (error) {
       hideLoadingIndicator();
       Get.snackbar('auth.resetPasswordFailed'.tr, error.message!,
           snackPosition: SnackPosition.BOTTOM,
-          duration: Duration(seconds: 10),
+          duration: const Duration(seconds: 10),
           backgroundColor: Get.theme.snackBarTheme.backgroundColor,
           colorText: Get.theme.snackBarTheme.actionTextColor);
     }

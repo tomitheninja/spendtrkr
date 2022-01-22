@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:flutter_starter/ui/auth/auth.dart';
-import 'package:flutter_starter/ui/components/components.dart';
-import 'package:flutter_starter/helpers/helpers.dart';
-import 'package:flutter_starter/controllers/controllers.dart';
+import 'package:spendtrkr/constants/app_routes.dart';
+import 'package:spendtrkr/ui/components/components.dart';
+import 'package:spendtrkr/helpers/helpers.dart';
+import 'package:spendtrkr/controllers/controllers.dart';
 
 class ResetPasswordUI extends StatelessWidget {
   final AuthController authController = AuthController.to;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  ResetPasswordUI({Key? key}) : super(key: key);
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(context),
@@ -24,18 +26,18 @@ class ResetPasswordUI extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   LogoGraphicHeader(),
-                  SizedBox(height: 48.0),
+                  const SizedBox(height: 48.0),
                   FormInputFieldWithIcon(
                     controller: authController.emailController,
                     iconPrefix: Icons.email,
                     labelText: 'auth.emailFormField'.tr,
                     validator: Validator().email,
                     keyboardType: TextInputType.emailAddress,
-                    onChanged: (value) => null,
+                    onChanged: (value) {},
                     onSaved: (value) =>
                         authController.emailController.text = value as String,
                   ),
-                  FormVerticalSpace(),
+                  const FormVerticalSpace(),
                   PrimaryButton(
                       labelText: 'auth.resetPasswordButton'.tr,
                       onPressed: () async {
@@ -43,7 +45,7 @@ class ResetPasswordUI extends StatelessWidget {
                           await authController.sendPasswordResetEmail(context);
                         }
                       }),
-                  FormVerticalSpace(),
+                  const FormVerticalSpace(),
                   signInLink(context),
                 ],
               ),
@@ -65,9 +67,9 @@ class ResetPasswordUI extends StatelessWidget {
     if (authController.emailController.text == '') {
       return LabelButton(
         labelText: 'auth.signInonResetPasswordLabelButton'.tr,
-        onPressed: () => Get.offAll(SignInUI()),
+        onPressed: () => Get.offAllNamed(Routes.signin),
       );
     }
-    return Container(width: 0, height: 0);
+    return const SizedBox(width: 0, height: 0);
   }
 }

@@ -1,42 +1,34 @@
 {
   "project_info": {
-    "project_number": "524197078337",
-    "firebase_url": "https://flutter-starter-delay.firebaseio.com",
-    "project_id": "flutter-starter-delay",
-    "storage_bucket": "flutter-starter-delay.appspot.com"
+    "project_number": "373611278061",
+    "project_id": "spendtrkr",
+    "storage_bucket": "spendtrkr.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:524197078337:android:dee32de1a467249cfa2dc0",
+        "mobilesdk_app_id": "1:373611278061:android:988ecd3e33505fb18b66e4",
         "android_client_info": {
-          "package_name": "com.tapmode.flutterstarter"
+          "package_name": "hu.tomitheninja.spendtrkr"
         }
       },
       "oauth_client": [
         {
-          "client_id": "524197078337-5gq7dldnk4tt8q4cvtenbn08q5fn4vkj.apps.googleusercontent.com",
+          "client_id": "373611278061-s25845paie0urovinumeh66u4atpjtar.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCHe-BxbY8-_CWhZZRC5jqVY4c0ydUGw08"
+          "current_key": "AIzaSyAPKW2TSBjkyXXzUGuaLQgysccfzDJ392c"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "524197078337-5gq7dldnk4tt8q4cvtenbn08q5fn4vkj.apps.googleusercontent.com",
+              "client_id": "373611278061-s25845paie0urovinumeh66u4atpjtar.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "524197078337-96irqf3smo96s6f48mc1neh2vh7jber5.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.tapmode.flutter-starter"
-              }
             }
           ]
         }

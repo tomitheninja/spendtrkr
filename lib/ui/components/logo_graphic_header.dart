@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_starter/controllers/controllers.dart';
+import 'package:spendtrkr/controllers/controllers.dart';
 
 class LogoGraphicHeader extends StatelessWidget {
-  LogoGraphicHeader();
+  LogoGraphicHeader({Key? key}) : super(key: key);
   final ThemeController themeController = ThemeController.to;
 
   @override

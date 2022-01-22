@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_starter/models/models.dart';
-import 'package:flutter_starter/ui/components/components.dart';
+import 'package:spendtrkr/models/models.dart';
+import 'package:spendtrkr/ui/components/components.dart';
 
 class Avatar extends StatelessWidget {
-  Avatar(
-    this.user,
-  );
+  const Avatar({Key? key, required this.user}) : super(key: key);
+
   final UserModel user;
 
   @override
@@ -17,7 +16,7 @@ class Avatar extends StatelessWidget {
       tag: 'User Avatar Image',
       child: CircleAvatar(
           foregroundColor: Colors.blue,
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.transparent,
           radius: 70.0,
           child: ClipOval(
             child: Image.network(

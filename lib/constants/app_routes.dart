@@ -1,16 +1,23 @@
 import 'package:get/get.dart';
-import 'package:flutter_starter/ui/ui.dart';
-import 'package:flutter_starter/ui/auth/auth.dart';
+import 'package:spendtrkr/ui/ui.dart';
+import 'package:spendtrkr/ui/auth/auth.dart';
+
+class Routes {
+  static const home = '/home';
+  static const signin = '/signin';
+  static const signup = '/signup';
+  static const settings = '/settings';
+  static const resetPassword = '/reset-password';
+}
 
 class AppRoutes {
   AppRoutes._(); //this is to prevent anyone from instantiating this object
   static final routes = [
-    GetPage(name: '/', page: () => SplashUI()),
-    GetPage(name: '/signin', page: () => SignInUI()),
-    GetPage(name: '/signup', page: () => SignUpUI()),
-    GetPage(name: '/home', page: () => HomeUI()),
-    GetPage(name: '/settings', page: () => SettingsUI()),
-    GetPage(name: '/reset-password', page: () => ResetPasswordUI()),
-    GetPage(name: '/update-profile', page: () => UpdateProfileUI()),
+    GetPage(name: '/', page: () => const SplashUI()),
+    GetPage(name: Routes.signin, page: () => SignInUI()),
+    GetPage(name: Routes.signup, page: () => SignUpUI()),
+    GetPage(name: Routes.home, page: () => const HomeUI()),
+    GetPage(name: Routes.settings, page: () => const SettingsUI()),
+    GetPage(name: Routes.resetPassword, page: () => ResetPasswordUI()),
   ];
 }

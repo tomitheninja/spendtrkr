@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-//import 'package:flutter_starter/ui/components/sliding_segmented_control.dart';
+//import 'package:spendtrkr/ui/components/sliding_segmented_control.dart';
 /*
 SegmentedSelector(
                 menuOptions: list of dropdown options in key value pairs,
@@ -10,10 +9,12 @@ SegmentedSelector(
 */
 
 class SegmentedSelector extends StatelessWidget {
-  SegmentedSelector(
-      {required this.menuOptions,
+  const SegmentedSelector(
+      {Key? key,
+      required this.menuOptions,
       required this.selectedOption,
-      required this.onValueChanged});
+      required this.onValueChanged})
+      : super(key: key);
 
   final List<dynamic> menuOptions;
   final String selectedOption;
@@ -26,18 +27,17 @@ class SegmentedSelector extends StatelessWidget {
     return CupertinoSlidingSegmentedControl(
         //thumbColor: Theme.of(context).primaryColor,
         groupValue: selectedOption,
-        children: Map.fromIterable(
-          menuOptions,
-          key: (option) => option.key,
-          value: (option) => Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(option.icon),
-              SizedBox(width: 6),
-              Text(option.value),
-            ],
-          ),
-        ),
+        children: {
+          for (var option in menuOptions)
+            option.key: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(option.icon),
+                const SizedBox(width: 6),
+                Text(option.value),
+              ],
+            )
+        },
         onValueChanged: onValueChanged);
   }
 }

@@ -13,8 +13,9 @@ FormInputFieldWithIcon(
 */
 
 class FormInputFieldWithIcon extends StatelessWidget {
-  FormInputFieldWithIcon(
-      {required this.controller,
+  const FormInputFieldWithIcon(
+      {Key? key,
+      required this.controller,
       required this.iconPrefix,
       required this.labelText,
       required this.validator,
@@ -23,7 +24,8 @@ class FormInputFieldWithIcon extends StatelessWidget {
       this.minLines = 1,
       this.maxLines,
       required this.onChanged,
-      required this.onSaved});
+      required this.onSaved})
+      : super(key: key);
 
   final TextEditingController controller;
   final IconData iconPrefix;

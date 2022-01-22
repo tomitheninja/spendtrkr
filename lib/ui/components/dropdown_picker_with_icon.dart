@@ -8,14 +8,16 @@ DropdownPickerWithIcon(
               ),
 */
 class DropdownPickerWithIcon extends StatelessWidget {
-  DropdownPickerWithIcon(
-      {required this.menuOptions,
-      required this.selectedOption,
-      this.onChanged});
+ 
 
   final List<dynamic> menuOptions;
   final String selectedOption;
   final void Function(String?)? onChanged;
+  const DropdownPickerWithIcon(
+      {Key? key,
+        required this.menuOptions,
+      required this.selectedOption,
+      this.onChanged}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class DropdownPickerWithIcon extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Icon(data.icon),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Text(
                         data.value,
                       ),
