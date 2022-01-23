@@ -29,10 +29,15 @@ class SettingsService extends GetxController {
   void onInit() {
     theme = _parseTheme(_storage.read('theme'));
     locale = _storage.read('locale') ?? 'en';
-    print('theme $theme');
-    print('locale $locale');
     super.onInit();
     update();
+  }
+
+  bool get isDarkMode {
+    return theme == ThemeMode.dark ||
+        theme == ThemeMode.system &&
+            WidgetsBinding.instance?.window.platformBrightness ==
+                Brightness.dark;
   }
 
   // function to parse ThemeMode from String
