@@ -1,14 +1,14 @@
 // User model in firebase_storage
 class UserModel {
   final String uid;
-  final String email;
+  final String? email;
   final String name;
   final String photoUrl;
 
   // constructor
   UserModel(
       {required this.uid,
-      required this.email,
+      this.email,
       required this.name,
       required this.photoUrl});
 
@@ -21,7 +21,7 @@ class UserModel {
     );
   }
 
-  Map<String, String> toJson() {
+  Map<String, String?> toJson() {
     return {
       'uid': uid,
       'email': email,

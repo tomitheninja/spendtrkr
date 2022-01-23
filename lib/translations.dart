@@ -34,6 +34,7 @@ Map<String, String> def = {
   "firebase.auth.unknown-error": 'unknown error',
   "firebase.auth.weak-password": "weak password",
   "firebase.auth.already-in-use": "already in use",
+  "firebase.auth.anon": "Anonymous",
   'validator.required': 'required',
 };
 
@@ -79,6 +80,7 @@ class MyTranslations extends Translations {
           "firebase.auth.unknown-error": 'Ismeretlen hiba',
           "firebase.auth.weak-password": "Nem elég biztonságos jelszó",
           "firebase.auth.already-in-use": "Már regisztráltál",
+          "firebase.auth.anon": "Anonymous",
           'validator.required': 'Adj meg egy értéket',
         },
         'en_AU': {
