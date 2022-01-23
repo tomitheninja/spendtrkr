@@ -10,8 +10,8 @@ class LoginFormController extends GetxController {
 
   @override
   void onClose() {
-    emailController.clear();
-    passwordController.clear();
+    emailController.dispose();
+    passwordController.dispose();
     super.onClose();
   }
 

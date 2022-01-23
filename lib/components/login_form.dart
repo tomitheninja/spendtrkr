@@ -30,6 +30,7 @@ class LoginForm extends StatelessWidget {
           TextFormField(
             validator: Validator.email,
             controller: controller.emailController,
+            autofillHints: const [AutofillHints.email],
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
                 labelText: 'auth.email'.tr,
@@ -39,6 +40,7 @@ class LoginForm extends StatelessWidget {
           TextFormField(
             validator: Validator.password,
             controller: controller.passwordController,
+            autofillHints: const [AutofillHints.password],
             obscureText: true,
             decoration: InputDecoration(
                 labelText: 'auth.password'.tr,

@@ -46,6 +46,7 @@ class SignupForm extends StatelessWidget {
           TextFormField(
             validator: Validator.required,
             controller: controller.nameController,
+            autofillHints: const [AutofillHints.name],
             decoration: InputDecoration(
               labelText: 'signup.username'.tr,
               icon: const Icon(Icons.person),
@@ -54,6 +55,9 @@ class SignupForm extends StatelessWidget {
           TextFormField(
             validator: Validator.email,
             controller: controller.emailController,
+            autofillHints: const [
+              AutofillHints.email,
+            ],
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
               labelText: 'auth.email'.tr,
@@ -63,6 +67,7 @@ class SignupForm extends StatelessWidget {
           TextFormField(
             validator: Validator.password,
             controller: controller.passwordController,
+            autofillHints: const [AutofillHints.newPassword],
             obscureText: true,
             decoration: InputDecoration(
               labelText: 'auth.password'.tr,
@@ -76,6 +81,7 @@ class SignupForm extends StatelessWidget {
               }
             },
             controller: controller.passwordAgainController,
+            autofillHints: const [AutofillHints.password],
             obscureText: true,
             decoration: InputDecoration(
               labelText: 'signup.password-again'.tr,

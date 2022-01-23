@@ -31,9 +31,10 @@ class SignupFormController extends GetxController {
   @override
   void onClose() {
     nameController.dispose();
-    emailController.clear();
-    passwordController.clear();
-    passwordAgainController.clear();
+    emailController.dispose();
+    passwordController.dispose();
+    passwordAgainController.dispose();
+    _photo.value = Uint8List(0);
     super.onClose();
   }
 
@@ -61,7 +62,7 @@ class SignupFormController extends GetxController {
           email: result.user!.email!,
           name: nameController.text,
           photoUrl: photoUrl);
-      _createUserFirestore(_newUser, result.user!);
+      await _createUserFirestore(_newUser, result.user!);
       nameController.clear();
       emailController.clear();
       passwordController.clear();
