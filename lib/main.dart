@@ -2,10 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:ots/ots.dart';
 import 'package:spendtrkr/controllers/auth.dart';
+import 'package:spendtrkr/controllers/login_form.dart';
 import 'package:spendtrkr/controllers/settings.dart';
 import 'package:spendtrkr/utils/routes.dart';
-
 import 'translations.dart';
 
 void main() async {
@@ -13,8 +14,9 @@ void main() async {
   await GetStorage.init();
 
   await Firebase.initializeApp();
-  Get.lazyPut<AuthController>(() => AuthController());
-  Get.lazyPut<SettingsService>(() => SettingsService());
+  Get.put(SettingsService());
+  Get.lazyPut(() => LoginFormController());
+  Get.put(AuthController());
   runApp(App());
 }
 
@@ -25,18 +27,20 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(settings.locale.toString());
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      translations: MyTranslations(),
-      locale: settings.locale,
-      fallbackLocale: const Locale('en', 'UK'),
-      title: 'Spendtrkt',
-      themeMode: settings.theme,
-      darkTheme:
-          ThemeData.dark().copyWith(scaffoldBackgroundColor: Colors.black),
-      initialRoute: AppRoutes.initial,
-      getPages: AppRoutes.routes,
+    return OTS(
+      showNetworkUpdates: true,
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        translations: MyTranslations(),
+        locale: settings.locale,
+        fallbackLocale: const Locale('en', 'UK'),
+        title: 'Spendtrkt',
+        themeMode: settings.theme,
+        darkTheme:
+            ThemeData.dark().copyWith(scaffoldBackgroundColor: Colors.black),
+        initialRoute: AppRoutes.initial,
+        getPages: AppRoutes.routes,
+      ),
     );
   }
 }

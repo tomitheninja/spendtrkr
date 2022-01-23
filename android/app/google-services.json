@@ -37,6 +37,13 @@
             {
               "client_id": "541450653193-73scfkpjkrjdegiq2qs2hter7dljdrvt.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "541450653193-6nsvm9689lcmrap2a2hvga2tg5ajr7t0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "hu.tomitheninja.spendtrkr"
+              }
             }
           ]
         }

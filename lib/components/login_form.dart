@@ -1,10 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ots/ots.dart';
+import 'package:spendtrkr/controllers/login_form.dart';
+import 'package:spendtrkr/utils/validator.dart';
 
 class LoginForm extends StatelessWidget {
   LoginForm({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
+  final controller = Get.find<LoginFormController>();
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +26,8 @@ class LoginForm extends StatelessWidget {
           ),
           const SizedBox(height: 30),
           TextFormField(
-            // validator: Validator().email,
-            // controller: authController.emailController,
-
+            validator: Validator.email,
+            controller: controller.emailController,
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
                 labelText: 'auth.email'.tr,
@@ -32,8 +35,8 @@ class LoginForm extends StatelessWidget {
                 icon: const Icon(Icons.email)),
           ),
           TextFormField(
-            //   validator: Validator().password,
-            //   controller: authController.passwordController,
+            validator: Validator.password,
+            controller: controller.passwordController,
             obscureText: true,
             decoration: InputDecoration(
                 labelText: 'auth.password'.tr,
@@ -58,23 +61,46 @@ class LoginForm extends StatelessWidget {
                 onPressed: () async {
                   try {
                     if (_formKey.currentState!.validate()) {
-                      //         await authController
-                      //               .signInWithEmailAndPassword(context);
+                      await controller.signInWithEmailAndPassword();
                     }
                   } on FirebaseAuthException catch (e) {
                     switch (e.code) {
                       case 'invalid-email':
-                        Get.snackbar("Error", "Invalid email address");
+                        showNotification(
+                          title: 'error'.tr,
+                          message: "firebase.auth.invalid-email".tr,
+                          backgroundColor: Colors.red,
+                          autoDismissible: true,
+                          notificationDuration: 2000,
+                        );
                         break;
                       case 'user-disabled':
-                        Get.snackbar("Error", "User is disabled");
+                        showNotification(
+                          title: 'error'.tr,
+                          message: "firebase.auth.user-disabled".tr,
+                          backgroundColor: Colors.red,
+                          autoDismissible: true,
+                          notificationDuration: 2000,
+                        );
                         break;
                       case 'user-not-found':
                       case 'wrong-password':
-                        Get.snackbar("Error", "Invalid email or password");
+                        showNotification(
+                          title: 'error'.tr,
+                          message: "firebase.auth.wrong-password".tr,
+                          backgroundColor: Colors.red,
+                          autoDismissible: true,
+                          notificationDuration: 2000,
+                        );
                         break;
                       default:
-                        Get.snackbar("Error", "An error occurred");
+                        showNotification(
+                          title: 'error'.tr,
+                          message: "firebase.auth.unknown-error".tr,
+                          backgroundColor: Colors.red,
+                          autoDismissible: true,
+                          notificationDuration: 2000,
+                        );
                         break;
                     }
                   } catch (e) {
