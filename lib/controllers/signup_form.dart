@@ -48,8 +48,8 @@ class SignupFormController extends GetxController {
     await showLoader();
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
       );
       var user = result.user;
 
@@ -62,7 +62,7 @@ class SignupFormController extends GetxController {
       UserModel _newUser = UserModel(
           uid: result.user!.uid,
           email: result.user!.email!,
-          name: nameController.text,
+          name: nameController.text.trim(),
           photoUrl: photoUrl);
       await _createUserFirestore(_newUser, result.user!);
       nameController.clear();
