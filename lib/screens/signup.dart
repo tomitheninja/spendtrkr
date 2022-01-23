@@ -160,33 +160,34 @@ class SignupBottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onVerticalDragStart: (_) {
-        Get.back();
-      },
+      onVerticalDragStart: (_) => Get.back(),
+      onHorizontalDragStart: (_) => Get.back(),
       child: Align(
         alignment: Alignment.bottomCenter,
-        child: Container(
-          padding: const EdgeInsets.only(bottom: 20, top: 40),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    "signup.login".tr,
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
+        child: RawMaterialButton(
+          onPressed: () => Get.back(),
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.only(bottom: 32, top: 32),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      "signup.login".tr,
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.keyboard_arrow_down),
-                    onPressed: Get.back,
-                  ),
-                ],
-              ),
-            ],
+                    const SizedBox(height: 8),
+                    const Icon(Icons.keyboard_arrow_down),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

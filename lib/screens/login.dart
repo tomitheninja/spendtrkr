@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spendtrkr/components/auth_header.dart';
-import 'package:spendtrkr/utils/routes.dart';
+import 'package:spendtrkr/screens/signup.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -75,6 +75,7 @@ class LoginBody extends StatelessWidget {
                       obscureText: true,
                       decoration: InputDecoration(
                           labelText: 'auth.password'.tr,
+                          contentPadding: const EdgeInsets.all(11.25),
                           icon: const Icon(Icons.lock)),
                     ),
                     const SizedBox(height: 24),
@@ -144,35 +145,48 @@ class LoginBottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onVerticalDragStart: (_) {
-        Get.toNamed(Routes.signup);
+      onPanUpdate: (details) {
+        if (details.delta.dx > 5) {
+          // swiping in right direction
+          Get.to(const SignupPage(), transition: Transition.leftToRight);
+        } else if (details.delta.dx < -5) {
+          // swiping in left direction
+          Get.to(const SignupPage(), transition: Transition.rightToLeft);
+        } else if (details.delta.dy.abs() > 5) {
+          Get.to(const SignupPage(), transition: Transition.downToUp);
+        }
       },
       child: Align(
         alignment: Alignment.bottomCenter,
-        child: Container(
-          padding: const EdgeInsets.only(bottom: 40, top: 20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.keyboard_arrow_up),
-                    onPressed: () {
-                      Get.toNamed(Routes.signup);
-                    },
-                  ),
-                  Text(
-                    "login.signup".tr.capitalize!,
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
+        child: RawMaterialButton(
+          onPressed: () => Get.to(
+            const SignupPage(),
+            transition: Transition.downToUp,
+            curve: Curves.elasticOut,
+            duration: const Duration(milliseconds: 800),
+          ),
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.only(bottom: 32, top: 32),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    const Icon(Icons.keyboard_arrow_up),
+                    const SizedBox(height: 8),
+                    Text(
+                      "login.signup".tr.capitalize!,
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
