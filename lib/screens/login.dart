@@ -42,7 +42,7 @@ class LoginBody extends StatelessWidget {
       child: Flex(
         direction: Axis.vertical,
         children: [
-          const AuthHeader(),
+          AuthHeader(),
           Expanded(
             child: Container(
               padding: const EdgeInsets.only(bottom: 100),

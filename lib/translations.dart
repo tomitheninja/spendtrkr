@@ -5,6 +5,7 @@ class MyTranslations extends Translations {
   Map<String, Map<String, String>> get keys => {
         'en': {
           'meta.lang-emoji': '🇬🇧',
+          'meta.lang-name': 'en',
           'app.title': 'spendtrkt',
           'home.welcome': 'Welcome to Flutter',
           'home.change-theme': 'Change theme',
@@ -25,6 +26,7 @@ class MyTranslations extends Translations {
         },
         'hu': {
           'meta.lang-emoji': '🇭🇺',
+          'meta.lang-name': 'hu',
           'app.title': 'spendtrkt',
           'home.welcome': 'Üdvözöllek a Flutterben',
           'home.change-theme': 'Téma váltása',
