@@ -20,13 +20,19 @@ class HomePage extends StatelessWidget {
                       ? ThemeMode.light
                       : ThemeMode.dark;
                 },
-                child: Text('home.change-theme'.tr),
+                child: Text('home.change-theme'.tr.capitalizeFirst!),
               ),
               ElevatedButton(
                 onPressed: () {
                   settings.locale = settings.locale == 'en' ? 'hu' : 'en';
                 },
                 child: Text('home.change-locale'.tr),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: const Text('logout'),
               ),
               const SizedBox(height: 16),
               Text('home.welcome'.tr, style: const TextStyle(fontSize: 30)),

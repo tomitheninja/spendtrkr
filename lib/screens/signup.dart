@@ -2,25 +2,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spendtrkr/components/auth_header.dart';
-import 'package:spendtrkr/utils/routes.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class SignupPage extends StatelessWidget {
+  const SignupPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('login.title'.tr.capitalizeFirst!),
+        title: Text('signup.title'.tr.capitalizeFirst!),
       ),
       body: SafeArea(
         child: Stack(
           children: [
             Expanded(
-              child: LoginBody(),
+              child: SignupBody(),
             ),
-            const LoginBottomNav(),
+            const SignupBottomNav(),
           ],
         ),
       ),
@@ -28,8 +27,8 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-class LoginBody extends StatelessWidget {
-  LoginBody({
+class SignupBody extends StatelessWidget {
+  SignupBody({
     Key? key,
   }) : super(key: key);
 
@@ -51,47 +50,64 @@ class LoginBody extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "login.welcome".tr.capitalizeFirst!,
-                      style: const TextStyle(
-                          fontSize: 17,
-                          color: Color.fromRGBO(147, 148, 184, 1),
-                          fontWeight: FontWeight.bold),
+                    Stack(
+                      children: [
+                        CircleAvatar(
+                            backgroundColor: Colors.grey[900],
+                            radius: 64,
+                            backgroundImage:
+                                const AssetImage('assets/images/birds.png')),
+                        Positioned(
+                          child: IconButton(
+                            iconSize: 32,
+                            icon: const Icon(Icons.add_photo_alternate),
+                            onPressed: () => {},
+                          ),
+                          bottom: -10,
+                          left: 80,
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 16),
                     TextFormField(
                       // validator: Validator().email,
                       // controller: authController.emailController,
-
+                      decoration: InputDecoration(
+                        labelText: 'signup.username'.tr,
+                        icon: const Icon(Icons.person),
+                      ),
+                    ),
+                    TextFormField(
+                      // validator: Validator().email,
+                      // controller: authController.emailController,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
-                          labelText: 'auth.email'.tr,
-                          contentPadding: const EdgeInsets.all(11.25),
-                          icon: const Icon(Icons.email)),
+                        labelText: 'auth.email'.tr,
+                        icon: const Icon(Icons.email),
+                      ),
                     ),
                     TextFormField(
                       //   validator: Validator().password,
                       //   controller: authController.passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
-                          labelText: 'auth.password'.tr,
-                          icon: const Icon(Icons.lock)),
+                        labelText: 'auth.password'.tr,
+                        icon: const Icon(Icons.lock),
+                      ),
+                    ),
+                    TextFormField(
+                      //   validator: Validator().password,
+                      //   controller: authController.passwordController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        labelText: 'signup.password-again'.tr,
+                        icon: const Icon(Icons.lock),
+                      ),
                     ),
                     const SizedBox(height: 24),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.only(right: 8),
-                          child: TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              'auth.forgot-password'.tr.capitalizeFirst!,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.w300),
-                            ),
-                          ),
-                        ),
                         ElevatedButton(
                           onPressed: () async {
                             try {
@@ -121,7 +137,7 @@ class LoginBody extends StatelessWidget {
                               Get.snackbar("Error", e.toString());
                             }
                           },
-                          child: Text('login.button-text'.tr.capitalizeFirst!),
+                          child: Text('signup.button-text'.tr.capitalizeFirst!),
                         ),
                       ],
                     ),
@@ -136,8 +152,8 @@ class LoginBody extends StatelessWidget {
   }
 }
 
-class LoginBottomNav extends StatelessWidget {
-  const LoginBottomNav({
+class SignupBottomNav extends StatelessWidget {
+  const SignupBottomNav({
     Key? key,
   }) : super(key: key);
 
@@ -145,30 +161,28 @@ class LoginBottomNav extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onVerticalDragStart: (_) {
-        Get.toNamed(Routes.signup);
+        Get.back();
       },
       child: Align(
         alignment: Alignment.bottomCenter,
         child: Container(
-          padding: const EdgeInsets.only(bottom: 40, top: 20),
+          padding: const EdgeInsets.only(bottom: 20, top: 40),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  IconButton(
-                    icon: const Icon(Icons.keyboard_arrow_up),
-                    onPressed: () {
-                      Get.toNamed(Routes.signup);
-                    },
-                  ),
                   Text(
-                    "login.signup".tr.capitalize!,
+                    "signup.login".tr,
                     style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,
                     ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    onPressed: Get.back,
                   ),
                 ],
               ),
