@@ -11,6 +11,7 @@ import 'translations.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
+
   await Firebase.initializeApp();
   Get.lazyPut<AuthController>(() => AuthController());
   Get.lazyPut<SettingsService>(() => SettingsService());
@@ -24,11 +25,12 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(settings.locale.toString());
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       translations: MyTranslations(),
       locale: settings.locale,
-      fallbackLocale: const Locale('en'),
+      fallbackLocale: const Locale('en', 'UK'),
       title: 'Spendtrkt',
       themeMode: settings.theme,
       darkTheme:
