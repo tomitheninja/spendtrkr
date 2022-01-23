@@ -52,11 +52,13 @@ class SignupFormController extends GetxController {
         password: passwordController.text,
       );
       var user = result.user;
+
       if (user == null) {
         throw Exception('Error signing up');
       }
       await user.sendEmailVerification();
-      String photoUrl = await StorageMethods().uploadImage("avatar", photo);
+      String photoUrl =
+          await StorageMethods().uploadImage("avatars/${user.uid}", photo);
       UserModel _newUser = UserModel(
           uid: result.user!.uid,
           email: result.user!.email!,
