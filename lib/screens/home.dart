@@ -20,11 +20,11 @@ class HomePage extends StatelessWidget {
                       ? ThemeMode.light
                       : ThemeMode.dark;
                 },
-                child: Text('home.change-theme'.tr.capitalizeFirst!),
+                child: Text('home.change-theme'.tr),
               ),
               ElevatedButton(
                 onPressed: () {
-                  settings.locale = settings.locale == 'en' ? 'hu' : 'en';
+                  // settings.locale = settings.locale == 'en' ? 'hu' : 'en';
                 },
                 child: Text('home.change-locale'.tr),
               ),

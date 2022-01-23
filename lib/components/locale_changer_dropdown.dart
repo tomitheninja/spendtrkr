@@ -16,21 +16,23 @@ class LocaleChangerDropdown extends StatelessWidget {
     final langs = MyTranslations().keys.entries;
 
     return DropdownButton(
-      value: Locale(settings.locale),
+      value: settings.locale,
       style: const TextStyle(fontSize: 18),
       icon: const SizedBox.shrink(),
       underline: Container(height: 0),
-      onChanged: (Locale? newValue) {
-        if (newValue != null) {
-          settings.locale = newValue.languageCode;
+      onChanged: (Locale? value) {
+        if (value != null) {
+          settings.locale = value;
         }
       },
-      items: langs
-          .map((e) => DropdownMenuItem(
-                value: Locale(e.key),
-                child: Text(e.value['meta.lang-emoji']! + ' ' + e.key),
-              ))
-          .toList(growable: false),
+      items: langs.map((e) {
+        var l = e.key.split('_');
+        var v = e.value;
+        return DropdownMenuItem(
+          value: Locale(l[0], l.length == 2 ? l[1] : null),
+          child: Text("${v['meta.lang-emoji']!} ${v['meta.lang-name']!}"),
+        );
+      }).toList(growable: false),
     );
   }
 }

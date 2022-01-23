@@ -5,14 +5,17 @@ import 'package:get_storage/get_storage.dart';
 class SettingsService extends GetxController {
   final _storage = GetStorage();
   var _theme = ThemeMode.system;
-  var _locale = 'en';
+  String _language = 'en';
+  String? _country;
 
   // get and set locale
-  String get locale => _locale;
-  set locale(String value) {
-    _locale = value;
-    _storage.write('locale', value.toString());
-    Get.updateLocale(Locale(value));
+  Locale get locale => Locale(_language, _country);
+  set locale(Locale value) {
+    _language = value.languageCode;
+    _country = value.countryCode;
+    _storage.write('language', _language);
+    _storage.write('country', _country);
+    Get.updateLocale(value);
     update();
   }
 
@@ -28,7 +31,8 @@ class SettingsService extends GetxController {
   @override
   void onInit() {
     theme = _parseTheme(_storage.read('theme'));
-    locale = _storage.read('locale') ?? 'en';
+    locale =
+        Locale(_storage.read('language') ?? 'en', _storage.read('country'));
     super.onInit();
     update();
   }

@@ -11,7 +11,7 @@ class LoginAnonButton extends StatelessWidget {
     return TextButton(
       onPressed: () {},
       child: Text(
-        'auth.continue-anonymous'.tr.capitalizeFirst!,
+        'auth.continue-anonymous'.tr,
         style: TextStyle(
           color: Colors.grey[400],
           fontWeight: FontWeight.w300,
