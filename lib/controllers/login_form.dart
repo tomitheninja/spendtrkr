@@ -22,8 +22,6 @@ class LoginFormController extends GetxController {
       await _auth.signInWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim());
-      emailController.clear();
-      passwordController.clear();
     } finally {
       await hideLoader();
     }

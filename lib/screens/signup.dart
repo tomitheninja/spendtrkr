@@ -19,8 +19,7 @@ class SignupPage extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.all(16),
-              child: Flex(
-                direction: Axis.vertical,
+              child: Column(
                 children: [
                   const AuthHeader(),
                   Expanded(

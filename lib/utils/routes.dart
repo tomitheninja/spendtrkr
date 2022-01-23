@@ -2,6 +2,7 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:spendtrkr/screens/home.dart';
 import 'package:spendtrkr/screens/login.dart';
+import 'package:spendtrkr/screens/settings.dart';
 import 'package:spendtrkr/screens/signup.dart';
 
 class Routes {
@@ -9,6 +10,7 @@ class Routes {
   static const String home = '/';
   static const String login = '/login';
   static const String signup = '/signup';
+  static const String settings = '/settings';
 }
 
 class AppRoutes {
@@ -18,5 +20,6 @@ class AppRoutes {
     GetPage(name: Routes.home, page: () => HomePage()),
     GetPage(name: Routes.login, page: () => const LoginPage()),
     GetPage(name: Routes.signup, page: () => const SignupPage()),
+    GetPage(name: Routes.settings, page: () => SettingsPage()),
   ];
 }

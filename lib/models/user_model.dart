@@ -2,15 +2,15 @@
 class UserModel {
   final String uid;
   final String? email;
-  final String name;
-  final String photoUrl;
+  final String? name;
+  final String? photoUrl;
 
   // constructor
   UserModel(
       {required this.uid,
+      this.name,
       this.email,
-      required this.name,
-      required this.photoUrl});
+      this.photoUrl});
 
   factory UserModel.fromMap(Map data) {
     return UserModel(

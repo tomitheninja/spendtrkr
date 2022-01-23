@@ -39,36 +39,41 @@ class SignupFormController extends GetxController {
   }
 
   //create the firestore user in users collection
-  Future<void> _createUserFirestore(UserModel user, User _firebaseUser) async {
+  Future<void> _createUserFirestore(User _firebaseUser, UserModel user) async {
     await _db.doc('/users/${_firebaseUser.uid}').set(user.toJson());
     update();
   }
 
   Future<void> signUpWithEmailAndPassword() async {
-    await showLoader();
+    debugPrint(photo.isEmpty.toString());
+    await showLoader(isModal: true);
     try {
+      final email = emailController.text.trim();
+      final password = passwordController.text.trim();
+      final name = nameController.text.trim();
+      final img = photo;
       UserCredential result = await _auth.createUserWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
+        email: email,
+        password: password,
       );
       var user = result.user;
 
       if (user == null) {
         throw Exception('Error signing up');
       }
+
       await user.sendEmailVerification();
-      String photoUrl =
-          await StorageMethods().uploadImage("avatars/${user.uid}", photo);
-      UserModel _newUser = UserModel(
-          uid: result.user!.uid,
-          email: result.user!.email!,
-          name: nameController.text.trim(),
-          photoUrl: photoUrl);
-      await _createUserFirestore(_newUser, result.user!);
-      nameController.clear();
-      emailController.clear();
-      passwordController.clear();
-      passwordAgainController.clear();
+
+      String? photoUrl = img.isEmpty
+          ? null
+          : await StorageMethods().uploadImage("avatars/${user.uid}", img);
+      await _createUserFirestore(
+          result.user!,
+          UserModel(
+              uid: result.user!.uid,
+              email: email,
+              name: name,
+              photoUrl: photoUrl));
     } finally {
       await hideLoader();
     }

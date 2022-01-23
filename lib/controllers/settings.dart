@@ -30,7 +30,7 @@ class SettingsService extends GetxController {
 
   @override
   void onInit() {
-    theme = _parseTheme(_storage.read('theme'));
+    _theme = _parseTheme(_storage.read('theme'));
     var lang = _storage.read('language');
     locale = lang != null
         ? Locale(lang, _storage.read('country'))

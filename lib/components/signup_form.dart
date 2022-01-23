@@ -3,15 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ots/ots.dart';
 import 'package:spendtrkr/controllers/signup_form.dart';
+import 'package:spendtrkr/utils/gravatar_uri.dart';
 import 'package:spendtrkr/utils/validator.dart';
 
-class SignupForm extends StatelessWidget {
+class SignupForm extends GetView<SignupFormController> {
   SignupForm({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
-  final controller = Get.find<SignupFormController>();
 
   @override
   Widget build(BuildContext context) {
+
     return Form(
       key: _formKey,
       child: Column(
@@ -19,13 +20,19 @@ class SignupForm extends StatelessWidget {
         children: [
           Stack(
             children: [
-              Obx(
-                () => controller.photo.isEmpty
-                    ? CircleAvatar(
-                        backgroundColor: Colors.grey[900],
-                        radius: 64,
-                        backgroundImage:
-                            const AssetImage('assets/images/birds.png'))
+              GetBuilder<SignupFormController>(
+                builder: (controller) => controller.photo.isEmpty
+                    ? GetUtils.isEmail(controller.emailController.text)
+                        ? CircleAvatar(
+                            backgroundColor: Colors.grey[900],
+                            radius: 64,
+                            backgroundImage: NetworkImage(gravatarUrl(
+                                controller.emailController.text.trim())))
+                        : CircleAvatar(
+                            backgroundColor: Colors.grey[900],
+                            radius: 64,
+                            backgroundImage:
+                                const AssetImage('assets/images/birds.png'))
                     : CircleAvatar(
                         backgroundColor: Colors.grey[900],
                         radius: 64,
@@ -55,6 +62,7 @@ class SignupForm extends StatelessWidget {
           TextFormField(
             validator: Validator.email,
             controller: controller.emailController,
+            onChanged: (value) => controller.update(),
             autofillHints: const [
               AutofillHints.email,
             ],
