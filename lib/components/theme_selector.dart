@@ -12,7 +12,7 @@ class ThemeSelector extends GetView<SettingsService> {
     MenuOptions(
         key: ThemeMode.light,
         value: 'theme.light'.tr,
-        icon: Icons.brightness_low),
+        icon: Icons.brightness_high),
     MenuOptions(
         key: ThemeMode.system,
         value: 'theme.system'.tr,
