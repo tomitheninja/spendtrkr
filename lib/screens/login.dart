@@ -17,21 +17,19 @@ class LoginPage extends StatelessWidget {
       body: SafeArea(
         child: Stack(
           children: [
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                child: Flex(
-                  direction: Axis.vertical,
-                  children: [
-                    const AuthHeader(),
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.only(bottom: 100),
-                        child: LoginForm(),
-                      ),
+            Container(
+              padding: const EdgeInsets.all(16),
+              child: Flex(
+                direction: Axis.vertical,
+                children: [
+                  const AuthHeader(),
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.only(bottom: 100),
+                      child: LoginForm(),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             const LoginBottomNav(),

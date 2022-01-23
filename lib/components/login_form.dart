@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ots/ots.dart';
 import 'package:spendtrkr/controllers/login_form.dart';
+import 'package:spendtrkr/controllers/signup_form.dart';
 import 'package:spendtrkr/utils/validator.dart';
 
 class LoginForm extends StatelessWidget {
   LoginForm({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
-  final controller = Get.find<LoginFormController>();
+  final controller = Get.put(LoginFormController());
+  final registerController = Get.put(SignupFormController());
 
   @override
   Widget build(BuildContext context) {
@@ -53,62 +55,65 @@ class LoginForm extends StatelessWidget {
                   onPressed: () {},
                   child: Text(
                     'auth.forgot-password'.tr,
-                    style: const TextStyle(fontWeight: FontWeight.w300),
                   ),
                 ),
               ),
               ElevatedButton(
-                onPressed: () async {
-                  try {
-                    if (_formKey.currentState!.validate()) {
-                      await controller.signInWithEmailAndPassword();
+                  onPressed: () async {
+                    try {
+                      if (_formKey.currentState!.validate()) {
+                        await controller.signInWithEmailAndPassword();
+                      }
+                    } on FirebaseAuthException catch (e) {
+                      switch (e.code) {
+                        case 'invalid-email':
+                          showNotification(
+                            title: 'error'.tr,
+                            message: "firebase.auth.invalid-email".tr,
+                            backgroundColor: Colors.red,
+                            autoDismissible: true,
+                            notificationDuration: 2000,
+                          );
+                          break;
+                        case 'user-disabled':
+                          showNotification(
+                            title: 'error'.tr,
+                            message: "firebase.auth.user-disabled".tr,
+                            backgroundColor: Colors.red,
+                            autoDismissible: true,
+                            notificationDuration: 2000,
+                          );
+                          break;
+                        case 'user-not-found':
+                        case 'wrong-password':
+                          showNotification(
+                            title: 'error'.tr,
+                            message: "firebase.auth.wrong-password".tr,
+                            backgroundColor: Colors.red,
+                            autoDismissible: true,
+                            notificationDuration: 2000,
+                          );
+                          break;
+                        default:
+                          showNotification(
+                            title: 'error'.tr,
+                            message: "firebase.auth.unknown-error".tr,
+                            backgroundColor: Colors.red,
+                            autoDismissible: true,
+                            notificationDuration: 2000,
+                          );
+                          break;
+                      }
+                    } catch (e) {
+                      Get.snackbar("Error", e.toString());
                     }
-                  } on FirebaseAuthException catch (e) {
-                    switch (e.code) {
-                      case 'invalid-email':
-                        showNotification(
-                          title: 'error'.tr,
-                          message: "firebase.auth.invalid-email".tr,
-                          backgroundColor: Colors.red,
-                          autoDismissible: true,
-                          notificationDuration: 2000,
-                        );
-                        break;
-                      case 'user-disabled':
-                        showNotification(
-                          title: 'error'.tr,
-                          message: "firebase.auth.user-disabled".tr,
-                          backgroundColor: Colors.red,
-                          autoDismissible: true,
-                          notificationDuration: 2000,
-                        );
-                        break;
-                      case 'user-not-found':
-                      case 'wrong-password':
-                        showNotification(
-                          title: 'error'.tr,
-                          message: "firebase.auth.wrong-password".tr,
-                          backgroundColor: Colors.red,
-                          autoDismissible: true,
-                          notificationDuration: 2000,
-                        );
-                        break;
-                      default:
-                        showNotification(
-                          title: 'error'.tr,
-                          message: "firebase.auth.unknown-error".tr,
-                          backgroundColor: Colors.red,
-                          autoDismissible: true,
-                          notificationDuration: 2000,
-                        );
-                        break;
-                    }
-                  } catch (e) {
-                    Get.snackbar("Error", e.toString());
-                  }
-                },
-                child: Text('login.button-text'.tr),
-              ),
+                  },
+                  child: Text(
+                    'login.button-text'.tr,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )),
             ],
           ),
         ],

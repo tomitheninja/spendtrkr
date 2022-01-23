@@ -18,6 +18,7 @@ Map<String, String> def = {
   'signup.login': 'login',
   'signup.username': 'username',
   'signup.password-again': 'password again',
+  'signup.password_mismatch': 'Passwords do not match',
   'auth.forgot-password': 'Forgot Password?',
   'auth.continue-anonymous': 'Continue without account',
   'auth.email': 'email',
@@ -31,6 +32,9 @@ Map<String, String> def = {
   "firebase.auth.user-disabled": "user disabled",
   "firebase.auth.wrong-password": "invalid credentials",
   "firebase.auth.unknown-error": 'unknown error',
+  "firebase.auth.weak-password": "weak password",
+  "firebase.auth.already-in-use": "already in use",
+  'validator.required': 'required',
 };
 
 class MyTranslations extends Translations {
@@ -59,11 +63,12 @@ class MyTranslations extends Translations {
           'signup.login': 'bejelentkezés',
           'signup.username': 'felhasználónév',
           'signup.password-again': 'jelszó újra',
+          'signup.password_mismatch': 'A jelszavak nem egyeznek',
           'auth.forgot-password': 'Elfelejtett jelszó?',
           'auth.continue-anonymous': 'Folytatás fiók nélkül',
           'auth.email': 'email',
           'auth.password': 'jelszó',
-          'validator.password-required': 'Adj meg egy jelszót',
+          'validator.password-required': 'Adj meg egy jelszavat',
           'validator.password-length': 'Legalább %s karakter',
           'validator.password-strength': 'Nem elég biztonságos',
           'validator.email': "Érvénytelen cím",
@@ -72,6 +77,9 @@ class MyTranslations extends Translations {
           "firebase.auth.user-disabled": "A felhasználó le van tiltva",
           "firebase.auth.wrong-password": "Hibás felhasználónév vagy jelszó",
           "firebase.auth.unknown-error": 'Ismeretlen hiba',
+          "firebase.auth.weak-password": "Nem elég biztonságos jelszó",
+          "firebase.auth.already-in-use": "Már regisztráltál",
+          'validator.required': 'Adj meg egy értéket',
         },
         'en_AU': {
           ...flipMap(def),

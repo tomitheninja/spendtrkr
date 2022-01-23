@@ -13,7 +13,7 @@ class AuthController extends GetxController {
 
   @override
   void onReady() async {
-    //run every time auth state changes
+    // run every time auth state changes
     ever(firebaseUser, handleAuthChanged);
 
     firebaseUser.bindStream(user);
@@ -22,7 +22,7 @@ class AuthController extends GetxController {
   }
 
   handleAuthChanged(_firebaseUser) async {
-    //get user data from firestore
+    // get user data from firestore
     if (_firebaseUser?.uid != null) {
       firestoreUser.bindStream(streamFirestoreUser());
     }
@@ -30,7 +30,7 @@ class AuthController extends GetxController {
     if (_firebaseUser == null) {
       Get.offAllNamed(Routes.login);
     } else {
-      Get.offAll(Routes.home);
+      Get.offAllNamed(Routes.home);
     }
   }
 
@@ -40,7 +40,7 @@ class AuthController extends GetxController {
   // Firebase user a realtime stream
   Stream<User?> get user => _auth.authStateChanges();
 
-  //Streams the firestore user from the firestore collection
+  // Streams the firestore user from the firestore collection
   Stream<UserModel> streamFirestoreUser() {
     return _db
         .doc('/users/${firebaseUser.value!.uid}')
@@ -48,13 +48,13 @@ class AuthController extends GetxController {
         .map((snapshot) => UserModel.fromMap(snapshot.data()!));
   }
 
-  //get the firestore user from the firestore collection
+  // get the firestore user from the firestore collection
   Future<UserModel> getFirestoreUser() {
     return _db.doc('/users/${firebaseUser.value!.uid}').get().then(
         (documentSnapshot) => UserModel.fromMap(documentSnapshot.data()!));
   }
 
-  //Method to handle user sign in using email and password
+  // Method to handle user sign in using email and password
   signInWithEmailAndPassword(
       {required String email, required String password}) async {}
 

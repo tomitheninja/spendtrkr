@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:spendtrkr/controllers/auth.dart';
 import 'package:spendtrkr/controllers/settings.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
   final settings = Get.find<SettingsService>();
+  final _auth = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +25,7 @@ class HomePage extends StatelessWidget {
                 child: Text('home.change-theme'.tr),
               ),
               ElevatedButton(
-                onPressed: () {
-                  // settings.locale = settings.locale == 'en' ? 'hu' : 'en';
-                },
-                child: Text('home.change-locale'.tr),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Get.back();
-                },
+                onPressed: _auth.signOut,
                 child: const Text('logout'),
               ),
               const SizedBox(height: 16),

@@ -1,10 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ots/ots.dart';
+import 'package:spendtrkr/controllers/signup_form.dart';
+import 'package:spendtrkr/utils/validator.dart';
 
 class SignupForm extends StatelessWidget {
   SignupForm({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
+  final controller = Get.find<SignupFormController>();
 
   @override
   Widget build(BuildContext context) {
@@ -15,15 +19,23 @@ class SignupForm extends StatelessWidget {
         children: [
           Stack(
             children: [
-              CircleAvatar(
-                  backgroundColor: Colors.grey[900],
-                  radius: 64,
-                  backgroundImage: const AssetImage('assets/images/birds.png')),
+              Obx(
+                () => controller.photo.isEmpty
+                    ? CircleAvatar(
+                        backgroundColor: Colors.grey[900],
+                        radius: 64,
+                        backgroundImage:
+                            const AssetImage('assets/images/birds.png'))
+                    : CircleAvatar(
+                        backgroundColor: Colors.grey[900],
+                        radius: 64,
+                        backgroundImage: MemoryImage(controller.photo)),
+              ),
               Positioned(
                 child: IconButton(
                   iconSize: 32,
                   icon: const Icon(Icons.add_photo_alternate),
-                  onPressed: () => {},
+                  onPressed: controller.selectImage,
                 ),
                 bottom: -10,
                 left: 80,
@@ -32,16 +44,16 @@ class SignupForm extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           TextFormField(
-            // validator: Validator().email,
-            // controller: authController.emailController,
+            validator: Validator.required,
+            controller: controller.nameController,
             decoration: InputDecoration(
               labelText: 'signup.username'.tr,
               icon: const Icon(Icons.person),
             ),
           ),
           TextFormField(
-            // validator: Validator().email,
-            // controller: authController.emailController,
+            validator: Validator.email,
+            controller: controller.emailController,
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
               labelText: 'auth.email'.tr,
@@ -49,8 +61,8 @@ class SignupForm extends StatelessWidget {
             ),
           ),
           TextFormField(
-            //   validator: Validator().password,
-            //   controller: authController.passwordController,
+            validator: Validator.password,
+            controller: controller.passwordController,
             obscureText: true,
             decoration: InputDecoration(
               labelText: 'auth.password'.tr,
@@ -58,8 +70,12 @@ class SignupForm extends StatelessWidget {
             ),
           ),
           TextFormField(
-            //   validator: Validator().password,
-            //   controller: authController.passwordController,
+            validator: (value) {
+              if (value != controller.passwordController.text) {
+                return 'signup.password_mismatch'.tr;
+              }
+            },
+            controller: controller.passwordAgainController,
             obscureText: true,
             decoration: InputDecoration(
               labelText: 'signup.password-again'.tr,
@@ -74,23 +90,46 @@ class SignupForm extends StatelessWidget {
                 onPressed: () async {
                   try {
                     if (_formKey.currentState!.validate()) {
-                      //         await authController
-                      //               .signInWithEmailAndPassword(context);
+                      await controller.signUpWithEmailAndPassword();
                     }
                   } on FirebaseAuthException catch (e) {
                     switch (e.code) {
                       case 'invalid-email':
-                        Get.snackbar("Error", "Invalid email address");
+                        showNotification(
+                          title: 'error'.tr,
+                          message: "firebase.auth.invalid-email".tr,
+                          backgroundColor: Colors.red,
+                          autoDismissible: true,
+                          notificationDuration: 2000,
+                        );
+
                         break;
-                      case 'user-disabled':
-                        Get.snackbar("Error", "User is disabled");
+                      case 'weak-password':
+                        showNotification(
+                          title: 'error'.tr,
+                          message: "firebase.auth.weak-password".tr,
+                          backgroundColor: Colors.red,
+                          autoDismissible: true,
+                          notificationDuration: 2000,
+                        );
                         break;
-                      case 'user-not-found':
-                      case 'wrong-password':
-                        Get.snackbar("Error", "Invalid email or password");
+                      case 'email-already-in-use':
+                        showNotification(
+                          title: 'error'.tr,
+                          message: "firebase.auth.already-in-use".tr,
+                          backgroundColor: Colors.red,
+                          autoDismissible: true,
+                          notificationDuration: 2000,
+                        );
                         break;
                       default:
-                        Get.snackbar("Error", "An error occurred");
+                        showNotification(
+                          title: 'error'.tr,
+                          message: "firebase.auth.unknown-error".tr,
+                          backgroundColor: Colors.red,
+                          autoDismissible: true,
+                          notificationDuration: 2000,
+                        );
                         break;
                     }
                   } catch (e) {

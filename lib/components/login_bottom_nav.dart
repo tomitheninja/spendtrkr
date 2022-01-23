@@ -13,12 +13,12 @@ class LoginBottomNav extends StatelessWidget {
       onPanUpdate: (details) {
         if (details.delta.dx > 5) {
           // swiping in right direction
-          Get.to(const SignupPage(), transition: Transition.leftToRight);
+          Get.to(() => const SignupPage(), transition: Transition.leftToRight);
         } else if (details.delta.dx < -5) {
           // swiping in left direction
-          Get.to(const SignupPage(), transition: Transition.rightToLeft);
+          Get.to(() => const SignupPage(), transition: Transition.rightToLeft);
         } else if (details.delta.dy.abs() > 5) {
-          Get.to(const SignupPage(), transition: Transition.downToUp);
+          Get.to(() => const SignupPage(), transition: Transition.downToUp);
         }
       },
       child: Align(

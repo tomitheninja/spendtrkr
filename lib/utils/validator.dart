@@ -5,6 +5,8 @@ import 'package:password_strength/password_strength.dart';
 class Validator {
   Validator._();
 
+  static final required = RequiredValidator(errorText: 'validator.required'.tr);
+
   static final email = MultiValidator([
     RequiredValidator(errorText: 'validator.email-required'.tr),
     EmailValidator(errorText: 'validator.email'.tr),

@@ -15,7 +15,7 @@ class LoginFormController extends GetxController {
     super.onClose();
   }
 
-  //Method to handle user sign in using email and password
+  // Method to handle user sign in using email and password
   Future<void> signInWithEmailAndPassword() async {
     await showLoader();
     try {

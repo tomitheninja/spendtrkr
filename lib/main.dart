@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:ots/ots.dart';
 import 'package:spendtrkr/controllers/auth.dart';
-import 'package:spendtrkr/controllers/login_form.dart';
 import 'package:spendtrkr/controllers/settings.dart';
 import 'package:spendtrkr/utils/routes.dart';
 import 'translations.dart';
@@ -15,7 +14,8 @@ void main() async {
 
   await Firebase.initializeApp();
   Get.put(SettingsService());
-  Get.lazyPut(() => LoginFormController());
+  // Get.lazyPut(() => LoginFormController());
+  // Get.lazyPut(() => SignupFormController());
   Get.put(AuthController());
   runApp(App());
 }
