@@ -55,7 +55,7 @@ class SettingsService extends GetxController {
         return ThemeMode.dark;
       case 'ThemeMode.system':
       default:
-        return ThemeMode.system;
+        return ThemeMode.dark;
     }
   }
 }
