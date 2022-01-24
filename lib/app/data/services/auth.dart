@@ -42,6 +42,11 @@ class AuthController extends GetxController {
   Future<User> get getUser async => auth.getUser()!;
   Stream<User?> get user => auth.subscribe();
 
+  // Send forgot password email
+  Future<void> sendPasswordResetEmail(String email) async {
+    return auth.db.sendPasswordResetEmail(email: email);
+  }
+
   // Create user without credentials
   Future<void> signupAnonymously() async {
     final result = await auth.db.signInAnonymously();

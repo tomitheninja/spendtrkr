@@ -25,7 +25,7 @@ class SignupUI extends StatelessWidget {
                   Expanded(
                     child: Container(
                       padding: const EdgeInsets.only(bottom: 100),
-                      child: SignupForm(),
+                      child: const SignupForm(),
                     ),
                   ),
                 ],

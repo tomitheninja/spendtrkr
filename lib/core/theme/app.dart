@@ -5,6 +5,8 @@ class Themes {
 
   static final light = ThemeData.light();
 
-  static final dark =
-      ThemeData.dark().copyWith(scaffoldBackgroundColor: Colors.black);
+  static final dark = ThemeData.dark().copyWith(
+    scaffoldBackgroundColor: Colors.black,
+    dialogBackgroundColor: Colors.grey[900],
+  );
 }

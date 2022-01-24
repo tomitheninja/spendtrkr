@@ -4,15 +4,15 @@ import 'package:get/get.dart';
 import 'package:ots/ots.dart';
 import 'package:spendtrkr/app/modules/auth/signup_controller.dart';
 import 'package:spendtrkr/core/utils/validator.dart';
+import 'package:spendtrkr/core/values/keys.dart';
 
 class SignupForm extends GetView<SignupFormController> {
-  SignupForm({Key? key}) : super(key: key);
-  final _formKey = GlobalKey<FormState>();
+  const SignupForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _formKey,
+      key: signupFormKey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -92,7 +92,7 @@ class SignupForm extends GetView<SignupFormController> {
               ElevatedButton(
                 onPressed: () async {
                   try {
-                    if (_formKey.currentState!.validate()) {
+                    if (signupFormKey.currentState!.validate()) {
                       await controller.signUpWithEmailAndPassword();
                     }
                   } on FirebaseAuthException catch (e) {

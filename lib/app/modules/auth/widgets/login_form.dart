@@ -2,21 +2,22 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ots/ots.dart';
+import 'package:spendtrkr/app/modules/auth/widgets/forgot_password_dialog.dart';
 import 'package:spendtrkr/core/utils/validator.dart';
+import 'package:spendtrkr/core/values/keys.dart';
 
 import '../login_controller.dart';
 import '../signup_controller.dart';
 
 class LoginForm extends StatelessWidget {
   LoginForm({Key? key}) : super(key: key);
-  final _formKey = GlobalKey<FormState>();
   final controller = Get.put(LoginFormController());
   final registerController = Get.put(SignupFormController());
 
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _formKey,
+      key: loginFormKey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -55,7 +56,12 @@ class LoginForm extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.only(right: 8),
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await Get.dialog(
+                      ForgotPasswordDialog(
+                          emailController: controller.emailController),
+                    );
+                  },
                   child: Text(
                     'auth.forgot-password'.tr,
                   ),
@@ -64,7 +70,7 @@ class LoginForm extends StatelessWidget {
               ElevatedButton(
                   onPressed: () async {
                     try {
-                      if (_formKey.currentState!.validate()) {
+                      if (loginFormKey.currentState!.validate()) {
                         await controller.signInWithEmailAndPassword();
                       }
                     } on FirebaseAuthException catch (e) {

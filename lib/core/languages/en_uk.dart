@@ -41,4 +41,10 @@ Map<String, String> enUk = {
   'theme.dark': 'Dark',
   'settings.locale': 'Locale',
   'settings.change-password': 'Change Password',
+  'auth.forgot-password.desc':
+      'Enter your email address to reset your password',
+  'auth.forgot-password.submit': 'Submit',
+  'auth.forgot-password.success.title': 'Email sent',
+  'auth.forgot-password.success.desc':
+      'If the email address is registered, you will receive an email with instructions to reset your password.',
 };

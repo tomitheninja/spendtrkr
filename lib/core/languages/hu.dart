@@ -41,4 +41,9 @@ Map<String, String> hu = {
   'theme.dark': 'Sötét',
   'settings.locale': 'Nyelv',
   'settings.change-password': 'Jelszó változtatás',
+  'auth.forgot-password.desc': 'Add meg az email címedet',
+  'auth.forgot-password.submit': 'Küldés',
+  'auth.forgot-password.success.title': 'Email elküldve',
+  'auth.forgot-password.success.desc':
+      'Ha a megadott email címre van regisztrálva egy fiók, elküldtünk egy emailt a jelszó visszaállításához.',
 };
