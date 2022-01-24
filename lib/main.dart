@@ -3,26 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:ots/ots.dart';
-import 'package:spendtrkr/controllers/auth.dart';
-import 'package:spendtrkr/controllers/settings.dart';
-import 'package:spendtrkr/utils/routes.dart';
-import 'core/values/languages/translations.dart';
+import 'package:spendtrkr/app/data/services/theme.dart';
+import 'package:spendtrkr/app/data/services/auth.dart';
+import 'app/data/services/locale.dart';
+import 'core/languages/translations.dart';
+import 'core/theme/app.dart';
+import 'routes/pages.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
-
   await Firebase.initializeApp();
-  Get.put(SettingsService());
-  // Get.lazyPut(() => LoginFormController());
-  // Get.lazyPut(() => SignupFormController());
+  await Get.putAsync(() => ThemeService().init());
+  await Get.putAsync(() => LocaleService().init());
+
   Get.put(AuthController());
   runApp(App());
 }
 
 class App extends StatelessWidget {
   App({Key? key}) : super(key: key);
-  final settings = Get.find<SettingsService>();
   final auth = Get.find<AuthController>();
 
   @override
@@ -32,12 +32,10 @@ class App extends StatelessWidget {
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         translations: MyTranslations(),
-        locale: settings.locale,
         fallbackLocale: const Locale('en', 'UK'),
         title: 'Spendtrkt',
-        themeMode: settings.theme,
-        darkTheme:
-            ThemeData.dark().copyWith(scaffoldBackgroundColor: Colors.black),
+        theme: Themes.light,
+        darkTheme: Themes.dark,
         initialRoute: AppRoutes.initial,
         getPages: AppRoutes.routes,
       ),
