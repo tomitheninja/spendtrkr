@@ -1,68 +1,85 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
+import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:spendtrkr/app/data/models/user_model.dart';
+import 'package:spendtrkr/app/data/provider/fire_auth.dart';
+import 'package:spendtrkr/app/data/provider/fire_storage.dart';
+import 'package:spendtrkr/app/data/provider/fire_store.dart';
 import 'package:spendtrkr/routes/routes.dart';
 
 class AuthController extends GetxController {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final auth = FireAuth();
+  final store = FireStore();
+  final storage = FireStorage();
+
   Rxn<User> firebaseUser = Rxn<User>();
   Rxn<UserModel> firestoreUser = Rxn<UserModel>();
 
   @override
   void onReady() async {
     // run every time auth state changes
-    ever(firebaseUser, handleAuthChanged);
+    ever(firebaseUser, (User? _firebaseUser) async {
+      // get user data from firestore
+      if (_firebaseUser?.uid != null) {
+        firestoreUser.bindStream(store.getUserStream(firebaseUser.value!.uid));
+      }
+
+      if (_firebaseUser == null) {
+        Get.offAllNamed(Routes.login);
+      } else {
+        Get.offAllNamed(Routes.home);
+      }
+    });
 
     firebaseUser.bindStream(user);
 
     super.onReady();
   }
 
-  handleAuthChanged(_firebaseUser) async {
-    // get user data from firestore
-    if (_firebaseUser?.uid != null) {
-      firestoreUser.bindStream(streamFirestoreUser());
-    }
+  Future<User> get getUser async => auth.getUser()!;
+  Stream<User?> get user => auth.subscribe();
 
-    if (_firebaseUser == null) {
-      Get.offAllNamed(Routes.login);
-    } else {
-      Get.offAllNamed(Routes.home);
-    }
+  // Create user without credentials
+  Future<void> signupAnonymously() async {
+    final result = await auth.db.signInAnonymously();
+    final user = result.user!;
+    await store.addUser(user.uid, UserModel(uid: user.uid));
   }
 
-  // Firebase user one-time fetch
-  Future<User> get getUser async => _auth.currentUser!;
+  // Create user with email and password
+  // img defaults to gravatar
+  Future<void> signupWithEmailAndPassword({
+    required String email,
+    required String password,
+    required String name,
+    required Uint8List img,
+  }) async {
+    UserCredential result = await auth.db.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    var user = result.user!;
 
-  // Firebase user a realtime stream
-  Stream<User?> get user => _auth.authStateChanges();
+    await user.sendEmailVerification();
 
-  // Streams the firestore user from the firestore collection
-  Stream<UserModel> streamFirestoreUser() {
-    return _db
-        .doc('/users/${firebaseUser.value!.uid}')
-        .snapshots()
-        .map((snapshot) => UserModel.fromMap(snapshot.data()!));
+    String? photoUrl = img.isEmpty
+        ? 'https://www.gravatar.com/avatar/${md5.convert(utf8.encode(email)).toString()}?d=mp'
+        : await storage.uploadAvatar(user.uid, img);
+
+    await store.addUser(
+        result.user!.uid,
+        UserModel(
+            uid: result.user!.uid,
+            email: email,
+            name: name,
+            photoUrl: photoUrl));
   }
-
-  // get the firestore user from the firestore collection
-  Future<UserModel> getFirestoreUser() {
-    return _db.doc('/users/${firebaseUser.value!.uid}').get().then(
-        (documentSnapshot) => UserModel.fromMap(documentSnapshot.data()!));
-  }
-
-  // Method to handle user sign in using email and password
-  signInWithEmailAndPassword(
-      {required String email, required String password}) async {}
-
-  // User registration using email and password
-  registerWithEmailAndPassword(String email, String password) async {}
 
   // Sign out
   Future<void> signOut() {
-    return _auth.signOut();
+    return auth.db.signOut();
   }
 }

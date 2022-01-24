@@ -16,14 +16,12 @@ void main() async {
   await Firebase.initializeApp();
   await Get.putAsync(() => ThemeService().init());
   await Get.putAsync(() => LocaleService().init());
-
   Get.put(AuthController());
-  runApp(App());
+  runApp(const App());
 }
 
 class App extends StatelessWidget {
-  App({Key? key}) : super(key: key);
-  final auth = Get.find<AuthController>();
+  const App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

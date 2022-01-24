@@ -17,16 +17,19 @@ class SettingsUI extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
-          /* Column(children: [
+          Column(children: [
             const SizedBox(height: 32),
             Stack(children: [
-              CircleAvatar(
-                backgroundColor: Colors.grey[900],
-                radius: 64,
-                backgroundImage: NetworkImage(
-                    _auth.firestoreUser.value!.photoUrl ??
-                        gravatarUrl(_auth.firestoreUser.value!.email)),
-              ),
+              _auth.firestoreUser.value!.photoUrl != null
+                  ? CircleAvatar(
+                      radius: 64,
+                      backgroundImage:
+                          NetworkImage(_auth.firestoreUser.value!.photoUrl!),
+                    )
+                  : const CircleAvatar(
+                      radius: 64,
+                      backgroundImage: AssetImage('assets/images/birds.png'),
+                    ),
               Positioned(
                 child: IconButton(
                   iconSize: 32,
@@ -41,10 +44,13 @@ class SettingsUI extends StatelessWidget {
             Text(_auth.firestoreUser.value!.name ?? '',
                 style: Theme.of(context).textTheme.headline6),
             const SizedBox(height: 16),
-            Text(
-                '${'auth.email'.tr}: ${_auth.firestoreUser.value!.email ?? ''}'),
+            !_auth.firebaseUser.value!.isAnonymous
+                ? Text(
+                    '${'auth.email'.tr}: ${_auth.firestoreUser.value!.email ?? ''}')
+                : ElevatedButton(
+                    onPressed: () {}, child: Text('login.button-text'.tr)),
             const SizedBox(height: 32),
-          ]), */
+          ]),
           ListTile(
             title: Text('settings.theme'.tr),
             trailing: ThemeSegmentedSelector(),
@@ -53,18 +59,20 @@ class SettingsUI extends StatelessWidget {
             title: Text('settings.locale'.tr),
             trailing: LocaleSegmentedSelector(),
           ),
-          ListTile(
-            title: Text('settings.change-password'.tr),
-            trailing: ElevatedButton(
-              onPressed: () {},
-              child: Text(
-                'settings.change-password'.tr,
-              ),
-            ),
-          ),
+          !_auth.firebaseUser.value!.isAnonymous
+              ? ListTile(
+                  title: Text('settings.change-password'.tr),
+                  trailing: TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      'settings.change-password'.tr,
+                    ),
+                  ),
+                )
+              : const SizedBox.shrink(),
           ListTile(
             title: Text('settings.signout'.tr),
-            trailing: ElevatedButton(
+            trailing: TextButton(
               style: const ButtonStyle(),
               onPressed: _auth.signOut,
               child: Text(

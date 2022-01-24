@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:spendtrkr/app/data/services/auth.dart';
 
-import '../anon_controller.dart';
-
-class SignupAnonButton extends StatelessWidget {
-  SignupAnonButton({
+class SignupAnonButton extends GetView<AuthController> {
+  const SignupAnonButton({
     Key? key,
   }) : super(key: key);
-
-  final controller = Get.put(SignupAnonController());
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: controller.signupAnon,
+      onPressed: controller.signupAnonymously,
       child: Text(
         'auth.continue-anonymous'.tr,
         style: const TextStyle(

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ots/ots.dart';
 import 'package:spendtrkr/app/modules/auth/signup_controller.dart';
-import 'package:spendtrkr/core/utils/gravatar_uri.dart';
 import 'package:spendtrkr/core/utils/validator.dart';
 
 class SignupForm extends GetView<SignupFormController> {
@@ -12,7 +11,6 @@ class SignupForm extends GetView<SignupFormController> {
 
   @override
   Widget build(BuildContext context) {
-
     return Form(
       key: _formKey,
       child: Column(
@@ -22,19 +20,10 @@ class SignupForm extends GetView<SignupFormController> {
             children: [
               GetBuilder<SignupFormController>(
                 builder: (controller) => controller.photo.isEmpty
-                    ? GetUtils.isEmail(controller.emailController.text)
-                        ? CircleAvatar(
-                            backgroundColor: Colors.grey[900],
-                            radius: 64,
-                            backgroundImage: NetworkImage(gravatarUrl(
-                                controller.emailController.text.trim())))
-                        : CircleAvatar(
-                            backgroundColor: Colors.grey[900],
-                            radius: 64,
-                            backgroundImage:
-                                const AssetImage('assets/images/birds.png'))
+                    ? const CircleAvatar(
+                        radius: 64,
+                        backgroundImage: AssetImage('assets/images/birds.png'))
                     : CircleAvatar(
-                        backgroundColor: Colors.grey[900],
                         radius: 64,
                         backgroundImage: MemoryImage(controller.photo)),
               ),

@@ -12,7 +12,7 @@ class AuthHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [const LocaleDropdownSelector(), SignupAnonButton()],
+      children: const [LocaleDropdownSelector(), SignupAnonButton()],
     );
   }
 }
