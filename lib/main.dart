@@ -6,7 +6,7 @@ import 'package:ots/ots.dart';
 import 'package:spendtrkr/controllers/auth.dart';
 import 'package:spendtrkr/controllers/settings.dart';
 import 'package:spendtrkr/utils/routes.dart';
-import 'translations.dart';
+import 'core/values/languages/translations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

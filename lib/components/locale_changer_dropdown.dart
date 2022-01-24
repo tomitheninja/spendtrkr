@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spendtrkr/controllers/settings.dart';
 
-import '../translations.dart';
+import '../core/values/languages/translations.dart';
 
 class LocaleChangerDropdown extends StatelessWidget {
   LocaleChangerDropdown({

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spendtrkr/controllers/settings.dart';
 import 'package:spendtrkr/models/menu_option.dart';
-import 'package:spendtrkr/translations.dart';
+import 'package:spendtrkr/core/values/languages/translations.dart';
 
 import 'segemented_selector.dart';
 
