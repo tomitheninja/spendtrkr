@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:spendtrkr/app/widgets/avatar.dart';
 import 'package:spendtrkr/app/widgets/segmented_selector/locale_segmented_selector.dart';
 import 'package:spendtrkr/app/widgets/segmented_selector/theme_segmented_selector.dart';
 import 'package:spendtrkr/app/data/services/auth.dart';
+import 'package:spendtrkr/core/utils/pick_image.dart';
 
 class SettingsUI extends StatelessWidget {
   SettingsUI({Key? key}) : super(key: key);
@@ -20,21 +23,44 @@ class SettingsUI extends StatelessWidget {
           Column(children: [
             const SizedBox(height: 32),
             Stack(children: [
-              _auth.firestoreUser.value!.photoUrl != null
-                  ? CircleAvatar(
-                      radius: 64,
-                      backgroundImage:
-                          NetworkImage(_auth.firestoreUser.value!.photoUrl!),
-                    )
-                  : const CircleAvatar(
-                      radius: 64,
-                      backgroundImage: AssetImage('assets/images/birds.png'),
+              Obx(() => Avatar(
+                    image: NetworkImage(
+                      _auth.firestoreUser.value!.photoUrl ??
+                          gravatar(_auth.firestoreUser.value!.email ?? ''),
                     ),
+                  )),
               Positioned(
                 child: IconButton(
                   iconSize: 32,
                   icon: const Icon(Icons.photo_camera),
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.defaultDialog(
+                      title: 'settings.change_photo'.tr,
+                      content: Text('settings.change_photo.desc'.tr),
+                      actions: [
+                        ElevatedButton(
+                          child: Text('settings.change_photo.camera'.tr),
+                          onPressed: () async {
+                            var img = await pickImage(ImageSource.camera);
+                            Get.back();
+                            if (img != null) {
+                              await _auth.changePhoto(img);
+                            }
+                          },
+                        ),
+                        ElevatedButton(
+                          child: Text('settings.change_photo.gallery'.tr),
+                          onPressed: () async {
+                            var img = await pickImage(ImageSource.gallery);
+                            Get.back();
+                            if (img != null) {
+                              await _auth.changePhoto(img);
+                            }
+                          },
+                        ),
+                      ],
+                    );
+                  },
                 ),
                 bottom: -10,
                 left: 80,
@@ -79,7 +105,7 @@ class SettingsUI extends StatelessWidget {
                 'settings.signout'.tr,
               ),
             ),
-          )
+          ),
         ],
       ),
     );

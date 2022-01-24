@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ots/ots.dart';
 import 'package:spendtrkr/app/modules/auth/signup_controller.dart';
+import 'package:spendtrkr/app/widgets/avatar.dart';
 import 'package:spendtrkr/core/utils/validator.dart';
 import 'package:spendtrkr/core/values/keys.dart';
 
@@ -19,13 +20,12 @@ class SignupForm extends GetView<SignupFormController> {
           Stack(
             children: [
               GetBuilder<SignupFormController>(
-                builder: (controller) => controller.photo.isEmpty
-                    ? const CircleAvatar(
-                        radius: 64,
-                        backgroundImage: AssetImage('assets/images/birds.png'))
-                    : CircleAvatar(
-                        radius: 64,
-                        backgroundImage: MemoryImage(controller.photo)),
+                builder: (controller) => Avatar(
+                  overrideImage: controller.photo.isNotEmpty
+                      ? MemoryImage(controller.photo)
+                      : null,
+                  image: const AssetImage('assets/images/birds.png'),
+                ),
               ),
               Positioned(
                 child: IconButton(

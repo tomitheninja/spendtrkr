@@ -46,4 +46,8 @@ Map<String, String> hu = {
   'auth.forgot-password.success.title': 'Email elküldve',
   'auth.forgot-password.success.desc':
       'Ha a megadott email címre van regisztrálva egy fiók, elküldtünk egy emailt a jelszó visszaállításához.',
+  'settings.change_photo': 'Fénykép változtatás',
+  'settings.change_photo.desc': 'Válassz egy új fényképet',
+  'settings.change_photo.camera': 'Kamera',
+  'settings.change_photo.gallery': 'Galéria',
 };

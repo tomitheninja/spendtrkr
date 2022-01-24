@@ -17,4 +17,8 @@ class FireStore {
   Future<void> addUser(String uid, UserModel user) async {
     await db.doc('/users/$uid').set(user.toJson());
   }
+
+  Future<void> updatePhoto(String uid, String photoUrl) async {
+    await db.doc('/users/$uid').update({'photoUrl': photoUrl});
+  }
 }

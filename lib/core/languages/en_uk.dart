@@ -47,4 +47,8 @@ Map<String, String> enUk = {
   'auth.forgot-password.success.title': 'Email sent',
   'auth.forgot-password.success.desc':
       'If the email address is registered, you will receive an email with instructions to reset your password.',
+  'settings.change_photo': 'Change Photo',
+  'settings.change_photo.desc': 'Select a new photo',
+  'settings.change_photo.camera': 'Camera',
+  'settings.change_photo.gallery': 'Gallery',
 };

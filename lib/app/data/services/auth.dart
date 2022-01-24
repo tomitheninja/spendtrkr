@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:typed_data';
-import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:ots/ots.dart';
 import 'package:spendtrkr/app/data/models/user_model.dart';
 import 'package:spendtrkr/app/data/provider/fire_auth.dart';
 import 'package:spendtrkr/app/data/provider/fire_storage.dart';
@@ -42,6 +41,21 @@ class AuthController extends GetxController {
   Future<User> get getUser async => auth.getUser()!;
   Stream<User?> get user => auth.subscribe();
 
+  Future<void> changePhoto(Uint8List image) async {
+    showLoader(isModal: true);
+    try {
+      final prevImage = firestoreUser.value!.photoUrl;
+      var uid = firebaseUser.value!.uid;
+      await store.updatePhoto(uid, await storage.uploadAvatar(uid, image));
+      if (prevImage != null) {
+        await storage.deleteAvatar(uid, prevImage);
+      }
+    } finally {
+      hideLoader();
+      update();
+    }
+  }
+
   // Send forgot password email
   Future<void> sendPasswordResetEmail(String email) async {
     return auth.db.sendPasswordResetEmail(email: email);
@@ -70,9 +84,8 @@ class AuthController extends GetxController {
 
     await user.sendEmailVerification();
 
-    String? photoUrl = img.isEmpty
-        ? 'https://www.gravatar.com/avatar/${md5.convert(utf8.encode(email)).toString()}?d=mp'
-        : await storage.uploadAvatar(user.uid, img);
+    String? photoUrl =
+        img.isNotEmpty ? await storage.uploadAvatar(user.uid, img) : null;
 
     await store.addUser(
         result.user!.uid,
