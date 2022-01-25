@@ -53,7 +53,7 @@ class TransactionUI extends StatelessWidget {
             icon: const Icon(Icons.save),
             onPressed: () => Get.back(result: createModel()),
           ),
-          title: const Text('Transaction'),
+          title: Text('transaction.title'.tr),
           shadowColor: Colors.transparent,
           actions: [
             id != null
@@ -89,12 +89,12 @@ class TransactionUI extends StatelessWidget {
                     initialValue: title.value,
                     style: context.theme.textTheme.headline5!
                         .copyWith(backgroundColor: context.theme.cardColor),
-                    decoration: const InputDecoration(
-                      hintText: 'Enter here',
+                    decoration: InputDecoration(
+                      hintText: 'transaction.title-hint'.tr,
                       border: InputBorder.none,
-                      labelText: 'Title',
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                      labelText: 'transaction.title-label'.tr,
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 4, horizontal: 16),
                     ),
                   ),
                 ),
@@ -106,17 +106,20 @@ class TransactionUI extends StatelessWidget {
                         amount.value = double.parse(x);
                       } catch (_) {}
                     },
-                    initialValue: amount.value.toString(),
+                    initialValue: (amount.value.toInt() == amount.value
+                            ? amount.toInt()
+                            : amount)
+                        .toString(),
                     keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                     ],
-                    decoration: const InputDecoration(
-                      hintText: 'Enter here',
-                      border: OutlineInputBorder(),
-                      labelText: 'Amount',
-                      contentPadding: EdgeInsets.all(24),
-                      prefixIcon: Icon(Icons.attach_money),
+                    decoration: InputDecoration(
+                      hintText: 'transaction.amount-hint'.tr,
+                      border: const OutlineInputBorder(),
+                      labelText: 'transaction.amount'.tr,
+                      contentPadding: const EdgeInsets.all(24),
+                      prefixIcon: const Icon(Icons.attach_money),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -127,13 +130,13 @@ class TransactionUI extends StatelessWidget {
                         date.value = x;
                       }
                     },
-                    decoration: const InputDecoration(
-                      hintStyle: TextStyle(color: Colors.black45),
-                      errorStyle: TextStyle(color: Colors.redAccent),
-                      border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.all(34),
-                      prefixIcon: Icon(Icons.event_note),
-                      labelText: 'Only time',
+                    decoration: InputDecoration(
+                      hintStyle: const TextStyle(color: Colors.black45),
+                      errorStyle: const TextStyle(color: Colors.redAccent),
+                      border: const OutlineInputBorder(),
+                      contentPadding: const EdgeInsets.all(34),
+                      prefixIcon: const Icon(Icons.event_note),
+                      labelText: 'transaction.pick-time'.tr,
                     ),
                     mode: DateTimeFieldPickerMode.date,
                     autovalidateMode: AutovalidateMode.always,
@@ -152,7 +155,8 @@ class TransactionUI extends StatelessWidget {
                       if (_contact != null) {
                         if (_contact.phoneNumbers != null) {
                           if (_contact.phoneNumbers!.isNotEmpty) {
-                            contact.value = _contact.phoneNumbers!.first;
+                            contact.value = ((_contact.fullName ?? '') + ' ') +
+                                _contact.phoneNumbers!.first;
                           }
                         }
                       }
@@ -163,7 +167,7 @@ class TransactionUI extends StatelessWidget {
                         const Icon(Icons.contacts),
                         Text(
                           contact.value.isEmpty
-                              ? 'Select contact'
+                              ? 'transaction.select-contact'.tr
                               : contact.value,
                           style: context.theme.textTheme.headline5!,
                         ),
