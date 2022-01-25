@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:open_location_picker/open_location_picker.dart';
 import 'package:ots/ots.dart';
 import 'package:spendtrkr/app/data/services/theme.dart';
 import 'package:spendtrkr/app/data/services/auth.dart';
@@ -37,8 +39,23 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OTS(
-      child: GetMaterialApp(
+    return OpenMapSettings(
+      onError: (context, error) {},
+      reverseZoom: ReverseZoom.suburb,
+      getCurrentLocation: () async {
+        final loc = await GeolocatorPlatform.instance.getCurrentPosition();
+        return LatLng(loc.latitude, loc.longitude);
+      },
+      currentLocationMarker: (context, location) => Marker(
+        point: location,
+        builder: (context) => Icon(
+          Icons.location_on,
+          size: 50,
+          color: Theme.of(context).primaryColor,
+        ),
+      ),
+      child: OTS(
+          child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         translations: MyTranslations(),
         fallbackLocale: const Locale('en', 'UK'),
@@ -47,7 +64,7 @@ class App extends StatelessWidget {
         darkTheme: Themes.dark,
         initialRoute: AppRoutes.initial,
         getPages: AppRoutes.routes,
-      ),
+      )),
     );
   }
 }

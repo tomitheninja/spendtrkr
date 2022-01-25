@@ -61,4 +61,5 @@ Map<String, String> hu = {
   'transaction.pick-time': 'Válassz időpontot',
   'transaction.select-contact': 'Válassz a névjegyzékből',
   'transaction.select-camera': 'Fénykép készítése',
+  'transaction.pick-location': 'Válassz egy helyszínt',
 };

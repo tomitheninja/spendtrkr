@@ -24,6 +24,8 @@ class AuthController extends GetxController {
 
       if (_firebaseUser == null) {
         Get.offAllNamed(Routes.login);
+      } else {
+        Get.offAllNamed(Routes.home);
       }
     });
 
@@ -66,7 +68,8 @@ class AuthController extends GetxController {
     required String name,
     required Uint8List img,
   }) async {
-    await _user.signupWithEmailAndPassword(email: email, password: password, name: name, img: img);
+    await _user.signupWithEmailAndPassword(
+        email: email, password: password, name: name, img: img);
     await Get.offNamed(Routes.home);
   }
 

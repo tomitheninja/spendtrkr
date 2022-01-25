@@ -18,6 +18,7 @@ class TransactionModel {
   bool isCompleted;
   String? contact;
   String? photoUrl;
+  String? location;
 
   TransactionModel({
     required this.ownerId,
@@ -27,6 +28,7 @@ class TransactionModel {
     required this.amount,
     this.contact,
     this.photoUrl,
+    this.location,
     String? id,
   }) : _id = id;
 
@@ -41,6 +43,7 @@ class TransactionModel {
       isCompleted: data['isCompleted'],
       contact: data['contact'],
       photoUrl: data['photoUrl'],
+      location: data['location'],
     );
   }
 
@@ -52,6 +55,7 @@ class TransactionModel {
       'isCompleted': isCompleted,
       'contact': contact,
       'photoUrl': photoUrl,
+      'location': location,
     };
   }
 }

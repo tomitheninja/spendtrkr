@@ -62,4 +62,5 @@ Map<String, String> enUk = {
   'transaction.pick-time': 'Pick time',
   'transaction.select-contact': 'Select contact',
   'transaction.select-camera': 'Take photo',
+  'transaction.pick-location': 'Pick location',
 };
