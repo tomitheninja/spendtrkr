@@ -1,10 +1,8 @@
-import 'package:spendtrkr/app/data/models/coordinate.dart';
-
 class TransactionModel {
   String? _id;
   // @virtual
   String? get id => _id;
-  set id(String? id) {
+  void setId(String? id) {
     if (id != _id && _id != null) {
       throw Exception('Id already set');
     }
@@ -18,7 +16,7 @@ class TransactionModel {
   double amount;
   DateTime date;
   bool isCompleted;
-  Coordinate? coordinate;
+  String? contact;
 
   TransactionModel({
     required this.ownerId,
@@ -26,7 +24,7 @@ class TransactionModel {
     required this.date,
     required this.isCompleted,
     required this.amount,
-    this.coordinate,
+    this.contact,
     String? id,
   }) : _id = id;
 
@@ -39,7 +37,7 @@ class TransactionModel {
       amount: data['amount'],
       date: data['date'].toDate(),
       isCompleted: data['isCompleted'],
-      coordinate: Coordinate.tryFomList(data['coordinate']),
+      contact: data['contact'],
     );
   }
 
@@ -49,7 +47,7 @@ class TransactionModel {
       'amount': amount,
       'date': date,
       'isCompleted': isCompleted,
-      'coordinate': coordinate?.toJson(),
+      'contact': contact,
     };
   }
 }

@@ -35,7 +35,7 @@ class SignupFormController extends GetxController {
   }
 
   Future<void> signUpWithEmailAndPassword() async {
-    await showLoader(isModal: true);
+    await showLoader(isModal: true, modalColor: Colors.pink);
     try {
       await _auth.signupWithEmailAndPassword(
         email: emailController.text.trim(),

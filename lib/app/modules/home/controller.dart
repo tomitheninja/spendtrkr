@@ -21,16 +21,9 @@ class TransactionController extends GetxController {
     await _db.delete(model);
   }
 
-  Future<void> add() async {
-    final model = TransactionModel(
-      ownerId: _auth.user!.uid,
-      title: 'Test',
-      amount: DateTime.now().millisecondsSinceEpoch.toDouble() % 100,
-      date: DateTime.now(),
-      isCompleted: false,
-    );
+  Future<void> add(TransactionModel model) async {
     await _db.add(model);
-    update();
+    //update();
   }
 
   Future<void> set(TransactionModel model) async {

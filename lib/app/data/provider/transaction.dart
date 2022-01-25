@@ -10,7 +10,7 @@ class TransactionProvider {
     final result = await _db
         .collection('/$userStorageKey/${data.ownerId}/$transactionKey')
         .add(data.toJson());
-    data.id = result.id;
+    data.setId(result.id);
     return data;
   }
 

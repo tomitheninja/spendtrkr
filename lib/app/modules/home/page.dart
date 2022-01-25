@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:spendtrkr/app/data/models/transaction_model.dart';
 import 'package:spendtrkr/app/data/services/auth.dart';
 import 'package:spendtrkr/app/modules/settings/page.dart';
+import 'package:spendtrkr/app/modules/transaction/page.dart';
 import 'package:spendtrkr/controller/tranaction_card.dart';
 
 import 'controller.dart';
@@ -35,12 +36,26 @@ class HomeUI extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blueGrey[400],
         child: const Icon(Icons.add, color: Colors.white, size: 30),
-        onPressed: () {
-          controller.add();
-          // showModalBottomSheet(
-          //     isScrollControlled: true,
-          //     context: context,
-          //     builder: (context) => const BottomAdderSheet());
+        onPressed: () async {
+          final result = await Get.to(TransactionUI(
+            transaction: TransactionModel(
+              ownerId: _auth.user!.uid,
+              amount: 0,
+              title: '',
+              isCompleted: false,
+              date: DateTime.now(),
+            ),
+            onDelete: (tr) async {
+              await controller.delete(tr);
+            },
+          ));
+          if (result != null && result is TransactionModel) {
+            if (result.id == null) {
+              await controller.add(result);
+            } else {
+              await controller.set(result);
+            }
+          }
         },
       ),
       body: SafeArea(child: Center(child: HomeBodyUI())),
@@ -114,15 +129,28 @@ class HomeBodyUI extends GetView<TransactionController> {
                             .replaceFirst('.0\$', '\$'),
                         refreshAction: () {},
                       )),
-                TransactionCard(
-                  key: Key(ds.id),
-                  transaction: t,
-                  onDelete: controller.delete,
-                  onCheckClicked: (transaction, value) async {
-                    transaction.isCompleted = value;
-                    controller.set(transaction);
-                    controller.update();
+                GestureDetector(
+                  onTap: () async {
+                    final result = await Get.to(() => TransactionUI(
+                          transaction: t,
+                          onDelete: (tr) async {
+                            await controller.delete(tr);
+                          },
+                        ));
+                    if (result != null && result is TransactionModel) {
+                      await controller.set(result);
+                    }
                   },
+                  child: TransactionCard(
+                    key: Key(ds.id),
+                    transaction: t,
+                    onDelete: controller.delete,
+                    onCheckClicked: (transaction, value) async {
+                      transaction.isCompleted = value;
+                      controller.set(transaction);
+                      controller.update();
+                    },
+                  ),
                 ),
               ],
             );

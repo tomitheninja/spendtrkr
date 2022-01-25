@@ -38,7 +38,6 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OTS(
-      showNetworkUpdates: true,
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         translations: MyTranslations(),
