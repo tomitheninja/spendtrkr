@@ -9,7 +9,6 @@ import 'package:spendtrkr/routes/routes.dart';
 
 class AuthController extends GetxController {
   final _user = UserProvider();
-  String? _redictedUrl;
 
   Rxn<User> firebaseUser = Rxn<User>();
   Rxn<UserModel> firestoreUser = Rxn<UserModel>();
@@ -24,10 +23,7 @@ class AuthController extends GetxController {
       }
 
       if (_firebaseUser == null) {
-        _redictedUrl = Get.routing.current;
         Get.offAllNamed(Routes.login);
-      } else {
-        Get.offAllNamed(_redictedUrl ?? Routes.home);
       }
     });
 
@@ -59,14 +55,20 @@ class AuthController extends GetxController {
   }
 
   // Create user without credentials
-  Future<void> Function() get signupAnonymously => _user.signUpAnonymously;
+  Future<void> signupAnonymously() async {
+    await _user.signUpAnonymously();
+    await Get.offNamed(Routes.home);
+  }
 
-  Future<void> Function({
+  Future<void> signupWithEmailAndPassword({
     required String email,
     required String password,
     required String name,
     required Uint8List img,
-  }) get signupWithEmailAndPassword => _user.signupWithEmailAndPassword;
+  }) async {
+    await _user.signupWithEmailAndPassword(email: email, password: password, name: name, img: img);
+    await Get.offNamed(Routes.home);
+  }
 
   Future<void> Function({required String email, required String password})
       get signInWithEmailAndPassword => _user.signInWithEmailAndPassword;
