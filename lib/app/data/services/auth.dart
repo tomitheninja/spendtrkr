@@ -4,15 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:ots/ots.dart';
 import 'package:spendtrkr/app/data/models/user_model.dart';
-import 'package:spendtrkr/app/data/provider/fire_auth.dart';
-import 'package:spendtrkr/app/data/provider/fire_storage.dart';
-import 'package:spendtrkr/app/data/provider/fire_store.dart';
+import 'package:spendtrkr/app/data/provider/user.dart';
 import 'package:spendtrkr/routes/routes.dart';
 
 class AuthController extends GetxController {
-  final auth = FireAuth();
-  final store = FireStore();
-  final storage = FireStorage();
+  final _user = UserProvider();
+  String? _redictedUrl;
 
   Rxn<User> firebaseUser = Rxn<User>();
   Rxn<UserModel> firestoreUser = Rxn<UserModel>();
@@ -23,32 +20,32 @@ class AuthController extends GetxController {
     ever(firebaseUser, (User? _firebaseUser) async {
       // get user data from firestore
       if (_firebaseUser?.uid != null) {
-        firestoreUser.bindStream(store.getUserStream(firebaseUser.value!.uid));
+        firestoreUser.bindStream(_user.streamById(firebaseUser.value!.uid));
       }
 
       if (_firebaseUser == null) {
+        _redictedUrl = Get.routing.current;
         Get.offAllNamed(Routes.login);
       } else {
-        Get.offAllNamed(Routes.home);
+        Get.offAllNamed(_redictedUrl ?? Routes.home);
       }
     });
 
-    firebaseUser.bindStream(user);
+    firebaseUser.bindStream(userStream);
 
     super.onReady();
   }
 
-  Future<User> get getUser async => auth.getUser()!;
-  Stream<User?> get user => auth.subscribe();
+  User? get user => _user.getAuth();
+  Stream<User?> get userStream => _user.subscribeAuth();
 
   Future<void> changePhoto(Uint8List image) async {
     showLoader(isModal: true);
     try {
-      final prevImage = firestoreUser.value!.photoUrl;
-      var uid = firebaseUser.value!.uid;
-      await store.updatePhoto(uid, await storage.uploadAvatar(uid, image));
-      if (prevImage != null) {
-        await storage.deleteAvatar(uid, prevImage);
+      final prevUrl = firestoreUser.value!.photoUrl;
+      await _user.uploadAvatar(firebaseUser.value!.uid, image);
+      if (prevUrl != null) {
+        await _user.deleteFileFromUrl(prevUrl);
       }
     } finally {
       hideLoader();
@@ -58,46 +55,22 @@ class AuthController extends GetxController {
 
   // Send forgot password email
   Future<void> sendPasswordResetEmail(String email) async {
-    return auth.db.sendPasswordResetEmail(email: email);
+    return _user.auth.sendPasswordResetEmail(email: email);
   }
 
   // Create user without credentials
-  Future<void> signupAnonymously() async {
-    final result = await auth.db.signInAnonymously();
-    final user = result.user!;
-    await store.addUser(user.uid, UserModel(uid: user.uid));
-  }
+  Future<void> Function() get signupAnonymously => _user.signUpAnonymously;
 
-  // Create user with email and password
-  // img defaults to gravatar
-  Future<void> signupWithEmailAndPassword({
+  Future<void> Function({
     required String email,
     required String password,
     required String name,
     required Uint8List img,
-  }) async {
-    UserCredential result = await auth.db.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-    var user = result.user!;
+  }) get signupWithEmailAndPassword => _user.signupWithEmailAndPassword;
 
-    await user.sendEmailVerification();
-
-    String? photoUrl =
-        img.isNotEmpty ? await storage.uploadAvatar(user.uid, img) : null;
-
-    await store.addUser(
-        result.user!.uid,
-        UserModel(
-            uid: result.user!.uid,
-            email: email,
-            name: name,
-            photoUrl: photoUrl));
-  }
+  Future<void> Function({required String email, required String password})
+      get signInWithEmailAndPassword => _user.signInWithEmailAndPassword;
 
   // Sign out
-  Future<void> signOut() {
-    return auth.db.signOut();
-  }
+  Future<void> signOut() => _user.auth.signOut();
 }

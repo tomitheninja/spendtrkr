@@ -1,10 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ots/ots.dart';
+import 'package:spendtrkr/app/data/services/auth.dart';
 
 class LoginFormController extends GetxController {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final _auth = Get.find<AuthController>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 

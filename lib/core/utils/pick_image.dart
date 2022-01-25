@@ -8,7 +8,6 @@ Future<Uint8List?> pickImage(ImageSource source) async {
     source: source,
     maxWidth: 500,
     maxHeight: 500,
-    imageQuality: 50,
     preferredCameraDevice: CameraDevice.front,
   );
   if (_file != null) {
