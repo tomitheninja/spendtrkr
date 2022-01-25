@@ -73,8 +73,7 @@ class SettingsUI extends StatelessWidget {
             !_auth.firebaseUser.value!.isAnonymous
                 ? Text(
                     '${'auth.email'.tr}: ${_auth.firestoreUser.value!.email ?? ''}')
-                : ElevatedButton(
-                    onPressed: () {}, child: Text('login.button-text'.tr)),
+                : const Text(''),
             const SizedBox(height: 32),
           ]),
           ListTile(

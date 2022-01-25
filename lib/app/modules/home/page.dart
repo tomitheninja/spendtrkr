@@ -215,7 +215,7 @@ class HomeHeaderUI extends StatelessWidget {
                           )),
                     ],
                   ),
-                  TextButton(
+                  /* TextButton(
                     style: TextButton.styleFrom(
                       shape: const CircleBorder(),
                       elevation: 8,
@@ -228,7 +228,7 @@ class HomeHeaderUI extends StatelessWidget {
                       color: Colors.white,
                       size: 30,
                     ),
-                  )
+                  ) */
                 ],
               ),
               const SizedBox(
