@@ -17,6 +17,7 @@ class TransactionModel {
   DateTime date;
   bool isCompleted;
   String? contact;
+  String? photoUrl;
 
   TransactionModel({
     required this.ownerId,
@@ -25,6 +26,7 @@ class TransactionModel {
     required this.isCompleted,
     required this.amount,
     this.contact,
+    this.photoUrl,
     String? id,
   }) : _id = id;
 
@@ -38,6 +40,7 @@ class TransactionModel {
       date: data['date'].toDate(),
       isCompleted: data['isCompleted'],
       contact: data['contact'],
+      photoUrl: data['photoUrl'],
     );
   }
 
@@ -48,6 +51,7 @@ class TransactionModel {
       'date': date,
       'isCompleted': isCompleted,
       'contact': contact,
+      'photoUrl': photoUrl,
     };
   }
 }

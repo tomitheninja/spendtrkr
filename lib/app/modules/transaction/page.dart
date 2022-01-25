@@ -1,5 +1,9 @@
+import 'dart:typed_data';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:spendtrkr/app/data/models/transaction_model.dart';
 import 'package:get/get.dart';
 import 'package:date_field/date_field.dart';
@@ -17,6 +21,7 @@ class TransactionUI extends StatelessWidget {
   final RxString contact;
   final RxBool isCompleted;
   final Function(TransactionModel) onDelete;
+  final RxString photoUrl;
 
   TransactionUI({
     Key? key,
@@ -29,6 +34,7 @@ class TransactionUI extends StatelessWidget {
         date = (transaction?.date ?? DateTime.now()).obs,
         contact = (transaction?.contact ?? '').obs,
         isCompleted = (transaction?.isCompleted ?? false).obs,
+        photoUrl = (transaction?.photoUrl ?? '').obs,
         super(key: key);
 
   TransactionModel createModel() {
@@ -182,6 +188,48 @@ class TransactionUI extends StatelessWidget {
                       prefixIcon: Icon(Icons.pin_drop),
                     ), */
                   ),
+                  const SizedBox(height: 16),
+                  TextButton(
+                    onPressed: () async {
+                      final ImagePicker _imagePicker = ImagePicker();
+                      XFile? _file = await _imagePicker.pickImage(
+                        source: ImageSource.gallery,
+                      );
+                      if (_file != null) {
+                        final bytes = await _file.readAsBytes();
+                        final img = await FirebaseStorage.instance
+                            .ref('transactions/$ownerId')
+                            .child(DateTime.now().hashCode.toString())
+                            .putData(bytes);
+                        photoUrl.value = await img.ref.getDownloadURL();
+                      }
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Icon(Icons.camera_alt),
+                        Text(
+                          'transaction.select-camera'.tr,
+                          style: context.theme.textTheme.headline5!,
+                        ),
+                        const SizedBox.shrink(),
+                      ],
+                    ),
+                    /* decoration: const InputDecoration(
+                      hintText: 'Pick location',
+                      border: OutlineInputBorder(),
+                      labelText: 'location',
+                      contentPadding: EdgeInsets.all(24),
+                      prefixIcon: Icon(Icons.pin_drop),
+                    ), */
+                  ),
+                  const SizedBox(height: 16),
+                  photoUrl.value.isNotEmpty
+                      ? Image.network(
+                          photoUrl.value,
+                          fit: BoxFit.cover,
+                        )
+                      : const SizedBox.shrink(),
                 ]),
               ],
             ),

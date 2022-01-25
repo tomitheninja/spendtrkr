@@ -60,4 +60,5 @@ Map<String, String> hu = {
   'transaction.amount-hint': 'Mennyit fizettél?',
   'transaction.pick-time': 'Válassz időpontot',
   'transaction.select-contact': 'Válassz a névjegyzékből',
+  'transaction.select-camera': 'Fénykép készítése',
 };
