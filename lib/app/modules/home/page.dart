@@ -15,7 +15,8 @@ class HomeUI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (_auth.firebaseUser.value == null) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      return const Scaffold(
+          body: Center(child: CircularProgressIndicator(color: Colors.pink)));
     }
     final controller = Get.put(TransactionController());
 
@@ -60,7 +61,3 @@ class HomeUI extends StatelessWidget {
     );
   }
 }
-
-
-
-

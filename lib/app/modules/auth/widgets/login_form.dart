@@ -5,6 +5,7 @@ import 'package:ots/ots.dart';
 import 'package:spendtrkr/app/modules/auth/widgets/forgot_password_dialog.dart';
 import 'package:spendtrkr/core/utils/validator.dart';
 import 'package:spendtrkr/core/values/keys.dart';
+import 'package:spendtrkr/routes/routes.dart';
 
 import '../login_controller.dart';
 import '../signup_controller.dart';
@@ -72,6 +73,7 @@ class LoginForm extends StatelessWidget {
                     try {
                       if (loginFormKey.currentState!.validate()) {
                         await controller.signInWithEmailAndPassword();
+                        Get.offAllNamed(Routes.home);
                       }
                     } on FirebaseAuthException catch (e) {
                       switch (e.code) {

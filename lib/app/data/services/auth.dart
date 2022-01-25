@@ -15,10 +15,11 @@ class AuthController extends GetxController {
 
   @override
   void onReady() async {
+    // await _user.signOut();
     // run every time auth state changes
     ever(firebaseUser, (User? _firebaseUser) async {
       // get user data from firestore
-      if (_firebaseUser?.uid != null) {
+      if (_firebaseUser != null) {
         firestoreUser.bindStream(_user.streamById(firebaseUser.value!.uid));
       }
 

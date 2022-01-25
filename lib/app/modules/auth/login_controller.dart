@@ -17,13 +17,13 @@ class LoginFormController extends GetxController {
 
   // Method to handle user sign in using email and password
   Future<void> signInWithEmailAndPassword() async {
-    await showLoader(isModal: true, modalColor: Colors.pink);
+    showLoader(isModal: true);
     try {
       await _auth.signInWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim());
     } finally {
-      await hideLoader();
+      hideLoader();
     }
   }
 }

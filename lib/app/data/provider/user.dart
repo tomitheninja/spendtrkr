@@ -40,12 +40,9 @@ class UserProvider {
     );
     var user = result.user!;
     await user.sendEmailVerification();
-
-    String? photoUrl =
-        img.isNotEmpty ? await uploadAvatar(user.uid, img) : null;
-
     await _addFirebaseUser(UserModel(
-        uid: result.user!.uid, email: email, name: name, photoUrl: photoUrl));
+        uid: result.user!.uid, email: email, name: name, photoUrl: null));
+    await uploadAvatar(user.uid, img);
   }
 
   Future<void> _addFirebaseUser(UserModel user) async {

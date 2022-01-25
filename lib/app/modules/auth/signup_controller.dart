@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:ots/ots.dart';
 import 'package:spendtrkr/app/data/services/auth.dart';
 import 'package:spendtrkr/core/utils/pick_image.dart';
+import 'package:spendtrkr/routes/routes.dart';
 
 class SignupFormController extends GetxController {
   final _auth = Get.find<AuthController>();
@@ -35,7 +36,7 @@ class SignupFormController extends GetxController {
   }
 
   Future<void> signUpWithEmailAndPassword() async {
-    await showLoader(isModal: true, modalColor: Colors.pink);
+    showLoader(isModal: true);
     try {
       await _auth.signupWithEmailAndPassword(
         email: emailController.text.trim(),
@@ -44,7 +45,8 @@ class SignupFormController extends GetxController {
         img: photo,
       );
     } finally {
-      await hideLoader();
+      hideLoader();
+      Get.offAllNamed(Routes.home);
     }
   }
 }
