@@ -47,6 +47,7 @@ dependencies:
   open_location_picker: ^0.0.3
   ots: ^1.0.0
   password_strength: ^0.2.0
+  permission_handler: ^8.3.0
   url_launcher: ^6.0.18
 
 dev_dependencies:

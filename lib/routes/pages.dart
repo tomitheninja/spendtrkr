@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:spendtrkr/routes/routes.dart';
-import 'package:spendtrkr/app/modules/home/page.dart';
-import 'package:spendtrkr/app/modules/settings/page.dart';
-import 'package:spendtrkr/app/modules/auth/login_page.dart';
-import 'package:spendtrkr/app/modules/auth/signup_page.dart';
+import 'package:spendtrkr/modules/home/page.dart';
+import 'package:spendtrkr/modules/settings/page.dart';
+import 'package:spendtrkr/modules/auth/login_page.dart';
+import 'package:spendtrkr/modules/auth/signup_page.dart';
 
 class AppRoutes {
   AppRoutes._();

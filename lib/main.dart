@@ -5,12 +5,14 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:open_location_picker/open_location_picker.dart';
 import 'package:ots/ots.dart';
-import 'package:spendtrkr/app/data/services/theme.dart';
-import 'package:spendtrkr/app/data/services/auth.dart';
-import 'app/data/services/locale.dart';
+import 'package:spendtrkr/data/services/theme.dart';
+import 'package:spendtrkr/data/services/auth.dart';
+import 'data/services/locale.dart';
 import 'core/languages/translations.dart';
 import 'core/theme/app.dart';
+import 'modules/auth/controller.dart';
 import 'routes/pages.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 const firebaseWebOptions = FirebaseOptions(
   apiKey: 'AIzaSyDuyY763bk4-OxjdhUUYW2HAQdYcP5xoCI',
@@ -31,6 +33,7 @@ void main() async {
   await Get.putAsync(() => ThemeService().init());
   await Get.putAsync(() => LocaleService().init());
   Get.put(AuthController());
+  Get.put(AuthFormController());
   runApp(const App());
 }
 
@@ -43,8 +46,20 @@ class App extends StatelessWidget {
       onError: (context, error) {},
       reverseZoom: ReverseZoom.suburb,
       getCurrentLocation: () async {
-        final loc = await GeolocatorPlatform.instance.getCurrentPosition();
-        return LatLng(loc.latitude, loc.longitude);
+        try {
+          if (await Permission.location.request().isGranted) {
+            try {
+              final position =
+                  await GeolocatorPlatform.instance.getCurrentPosition();
+              return LatLng(position.latitude, position.longitude);
+              // ignore: empty_catches
+            } catch (e) {}
+          }
+
+          return null;
+        } catch (e) {
+          return null;
+        }
       },
       currentLocationMarker: (context, location) => Marker(
         point: location,
