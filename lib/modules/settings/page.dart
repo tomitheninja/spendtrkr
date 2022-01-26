@@ -84,17 +84,17 @@ class SettingsUI extends StatelessWidget {
             title: Text('settings.locale'.tr),
             trailing: LocaleSegmentedSelector(),
           ),
-          !_auth.firebaseUser.value!.isAnonymous
-              ? ListTile(
-                  title: Text('settings.change-password'.tr),
-                  trailing: TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      'settings.change-password'.tr,
-                    ),
-                  ),
-                )
-              : const SizedBox.shrink(),
+          // !_auth.firebaseUser.value!.isAnonymous
+          //     ? ListTile(
+          //         title: Text('settings.change-password'.tr),
+          //         trailing: TextButton(
+          //           onPressed: () {},
+          //           child: Text(
+          //             'settings.change-password'.tr,
+          //           ),
+          //         ),
+          //       )
+          //     : const SizedBox.shrink(),
           ListTile(
             title: Text('settings.signout'.tr),
             trailing: TextButton(
