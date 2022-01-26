@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:spendtrkr/data/models/transaction_model.dart';
 import 'package:spendtrkr/data/services/auth.dart';
 import 'package:spendtrkr/modules/settings/page.dart';
-import 'package:spendtrkr/modules/transaction/page.dart';
+import 'package:spendtrkr/widgets/transaction_editor.dart';
 
 import 'controller.dart';
 import 'widgets/home_body.dart';
@@ -36,17 +36,15 @@ class HomeUI extends StatelessWidget {
         backgroundColor: Colors.blueGrey[400],
         child: const Icon(Icons.add, color: Colors.white, size: 30),
         onPressed: () async {
-          final result = await Get.to(TransactionUI(
+          final result = await Get.to(TransactionEditorUI(
             transaction: TransactionModel(
               ownerId: _auth.user!.uid,
               amount: 0,
               title: '',
-              isCompleted: false,
+              isCompleted: true,
               date: DateTime.now(),
             ),
-            onDelete: (tr) async {
-              await controller.delete(tr);
-            },
+            onDelete: (_) {},
           ));
           if (result != null && result is TransactionModel) {
             if (result.id == null) {
@@ -57,7 +55,7 @@ class HomeUI extends StatelessWidget {
           }
         },
       ),
-      body: SafeArea(child: Center(child: HomeBodyUI())),
+      body: const SafeArea(child: Center(child: HomeBodyUI())),
     );
   }
 }

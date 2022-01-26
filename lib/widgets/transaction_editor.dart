@@ -6,14 +6,11 @@ import 'package:spendtrkr/data/models/transaction_model.dart';
 import 'package:get/get.dart';
 import 'package:date_field/date_field.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
-import 'package:spendtrkr/data/services/auth.dart';
 import 'package:open_location_picker/open_location_picker.dart';
 
-class TransactionUI extends StatelessWidget {
-  final _auth = Get.find<AuthController>();
-
+class TransactionEditorUI extends StatelessWidget {
   final String? id;
-  final String? ownerId;
+  final String ownerId;
   final RxString title;
   final RxDouble amount;
   final Rx<DateTime> date;
@@ -22,26 +19,27 @@ class TransactionUI extends StatelessWidget {
   final Function(TransactionModel) onDelete;
   final RxString photoUrl;
   final Rx<String?> location;
+  final TransactionModel transaction;
 
-  TransactionUI({
+  TransactionEditorUI({
     Key? key,
-    TransactionModel? transaction,
+    required this.transaction,
     required this.onDelete,
-  })  : id = transaction?.id,
-        ownerId = transaction?.ownerId,
-        title = (transaction?.title ?? '').obs,
-        amount = (transaction?.amount ?? 0.0).obs,
-        date = (transaction?.date ?? DateTime.now()).obs,
-        contact = (transaction?.contact ?? '').obs,
-        isCompleted = (transaction?.isCompleted ?? true).obs,
-        photoUrl = (transaction?.photoUrl ?? '').obs,
-        location = (transaction?.location ?? '').obs,
+  })  : id = transaction.id,
+        ownerId = transaction.ownerId,
+        title = transaction.title.obs,
+        amount = transaction.amount.obs,
+        date = transaction.date.obs,
+        contact = (transaction.contact ?? '').obs,
+        isCompleted = transaction.isCompleted.obs,
+        photoUrl = (transaction.photoUrl ?? '').obs,
+        location = transaction.location.obs,
         super(key: key);
 
   TransactionModel createModel() {
     return TransactionModel(
       id: id,
-      ownerId: ownerId ?? _auth.user!.uid,
+      ownerId: ownerId,
       title: title.value,
       amount: amount.value,
       date: date.value,
@@ -217,6 +215,7 @@ class TransactionUI extends StatelessWidget {
                           final ImagePicker _imagePicker = ImagePicker();
                           XFile? _file = await _imagePicker.pickImage(
                             source: ImageSource.gallery,
+                            imageQuality: 50,
                           );
                           if (_file != null) {
                             final bytes = await _file.readAsBytes();

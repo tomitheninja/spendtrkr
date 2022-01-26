@@ -115,7 +115,7 @@ class SignupForm extends GetView<AuthFormController> {
                       );
                       controller.passwordController.text = '';
                       controller.passwordAgainController.text = '';
-                      controller.photo.value.clear();
+                      controller.photo.value = Uint8List(0);
                     } on FirebaseAuthException catch (e) {
                       switch (e.code) {
                         case 'invalid-email':
