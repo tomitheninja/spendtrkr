@@ -54,10 +54,47 @@ class LoginForm extends GetView<AuthFormController> {
                 padding: const EdgeInsets.only(right: 8),
                 child: TextButton(
                   onPressed: () async {
-                    await Get.dialog(
-                      ForgotPasswordDialog(
-                          emailController: controller.emailController),
-                    );
+                    final result = await Get.dialog(ForgotPasswordDialog());
+                    if (result != null && result is String) {
+                      if (forgotPasswordFormKey.currentState!.validate()) {
+                        try {
+                          await controller.auth
+                              .sendPasswordResetEmail(result);
+                        } on FirebaseAuthException catch (e) {
+                          switch (e.code) {
+                            case 'user-not-found':
+                              break;
+                            case 'invalid-email':
+                              showNotification(
+                                title: 'error'.tr,
+                                message: "firebase.auth.invalid-email".tr,
+                                backgroundColor: Colors.red,
+                                autoDismissible: true,
+                                notificationDuration: 2000,
+                              );
+                              return;
+                            default:
+                              debugPrint(e.code);
+                              showNotification(
+                                title: 'error'.tr,
+                                message: "firebase.auth.unknown-error".tr,
+                                backgroundColor: Colors.red,
+                                autoDismissible: true,
+                                notificationDuration: 2000,
+                              );
+                              return;
+                          }
+                        }
+                        showNotification(
+                          title: 'auth.forgot-password.success.title'.tr,
+                          message: 'auth.forgot-password.success.desc'.tr,
+                          autoDismissible: true,
+                          notificationDuration: 5000,
+                          backgroundColor: Colors.green,
+                        );
+                        Get.back();
+                      }
+                    }
                   },
                   child: Text(
                     'auth.forgot-password'.tr,

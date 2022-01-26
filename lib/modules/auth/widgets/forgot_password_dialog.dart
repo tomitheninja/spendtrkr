@@ -1,15 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ots/ots.dart';
 import 'package:spendtrkr/core/utils/validator.dart';
 import 'package:spendtrkr/core/values/keys.dart';
 import 'package:spendtrkr/data/services/auth.dart';
 
 class ForgotPasswordDialog extends GetView<AuthController> {
-  final TextEditingController emailController;
-  const ForgotPasswordDialog({Key? key, required this.emailController})
-      : super(key: key);
+  final emailController = TextEditingController();
+  ForgotPasswordDialog({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,43 +44,7 @@ class ForgotPasswordDialog extends GetView<AuthController> {
         ElevatedButton(
           child: Text("auth.forgot-password.submit".tr),
           onPressed: () async {
-            if (forgotPasswordFormKey.currentState!.validate()) {
-              try {
-                await controller.sendPasswordResetEmail(emailController.text);
-              } on FirebaseAuthException catch (e) {
-                switch (e.code) {
-                  case 'user-not-found':
-                    break;
-                  case 'invalid-email':
-                    showNotification(
-                      title: 'error'.tr,
-                      message: "firebase.auth.invalid-email".tr,
-                      backgroundColor: Colors.red,
-                      autoDismissible: true,
-                      notificationDuration: 2000,
-                    );
-                    return;
-                  default:
-                    debugPrint(e.code);
-                    showNotification(
-                      title: 'error'.tr,
-                      message: "firebase.auth.unknown-error".tr,
-                      backgroundColor: Colors.red,
-                      autoDismissible: true,
-                      notificationDuration: 2000,
-                    );
-                    return;
-                }
-              }
-              showNotification(
-                title: 'auth.forgot-password.success.title'.tr,
-                message: 'auth.forgot-password.success.desc'.tr,
-                autoDismissible: true,
-                notificationDuration: 5000,
-                backgroundColor: Colors.green,
-              );
-              Get.back();
-            }
+            Get.back(result: emailController.text);
           },
         ),
       ],
